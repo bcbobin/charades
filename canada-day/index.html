@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1c0507">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Canada Day Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍁</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Alfa Slab One"; --title-spacing: 0;
+    --title-size: clamp(22px, 7.4vw, 36px); --timer-size: clamp(56px, 19vw, 84px); --timesup-size: 42px;
+    --bg: #1c0507; --bg2: #26080b; --card: #34100f;
+    --ink: #fff6f4; --muted: #e0b0aa;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #0d0203;
+    --glow-top: #7a1218; --glow-bottom: #3d0a0e; --act-glow: #5a0e13;
+    --title: #ffffff; --title-shadow: 0 3px 0 #d52b1e, 0 0 18px rgba(255,80,60,.45);
+    --accent: #e8362a; --accent-hi: #ff5f52; --accent-ink: #ffffff; --accent-shadow: #8a140d;
+    --good: #5fd39a; --good-hi: #8fe3b9; --good-ink: #00301a; --good-shadow: #227a4f;
+    --bad: #ffb84d; --bad-hi: #ffcc7a; --bad-ink: #301b00; --bad-shadow: #94600f;
+    --c-songs: #ff6b5f; --c-movies: #ffffff; --c-actions: #5fd39a;
+    --c-books: #ffb84d; --c-quotes: #ff9a8f; --c-chars: #9cc8ff;
+    --fx-opacity: .45;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "canada-day",
+  title: "True North Charades",
+  deco: "🍁 🏒 🥞 🛶 🍁",
+  particles: ["🍁"], particleMotion: "fall",
+  teams: ["🍁 Maple Leaves", "🏒 Pucksters"],
+  modes: { easy: "🥞 Easy", hard: "🧊 Hard" },
+  labels: { movies: "🎬 Movie / TV", chars: "🍁 Character" },
+  words: {
+    songs: {
+      easy: [
+        "O Canada", "Summer of '69", "Call Me Maybe", "Hotline Bling", "Sk8er Boi", "Complicated", "Ironic",
+        "Life Is a Highway", "Man! I Feel Like a Woman!", "That Don't Impress Me Much", "Hallelujah", "Baby",
+        "Peaches", "Blinding Lights", "God's Plan", "Can't Feel My Face", "Heart of Gold", "Wavin' Flag"
+      ],
+      hard: [
+        "The Hockey Song", "Bud the Spud", "Big Yellow Taxi", "Both Sides, Now", "If I Had $1000000",
+        "Ahead by a Century", "American Woman", "Takin' Care of Business", "Sundown", "Snowbird", "Four Strong Winds",
+        "Barrett's Privateers", "Tom Sawyer", "Rockin' in the Free World", "Wheat Kings", "Closer to the Heart",
+        "Girlfriend", "You Learn", "Starboy", "Heaven", "Let Your Backbone Slide"
+      ]
+    },
+    movies: {
+      easy: [
+        "Brother Bear", "The Mighty Ducks", "Happy Gilmore", "Deadpool", "Schitt's Creek", "PAW Patrol",
+        "Scott Pilgrim vs. the World", "Anne with an E", "Degrassi", "Kim's Convenience", "Corner Gas", "Cool Runnings",
+        "Franklin", "Caillou"
+      ],
+      hard: [
+        "Strange Brew", "Bon Cop, Bad Cop", "Canadian Bacon", "Slap Shot", "Men with Brooms", "Meatballs", "Due South",
+        "The Red Green Show", "Murdoch Mysteries", "Mr. Dressup", "Fraggle Rock", "Heartland", "Goon", "Juno",
+        "Les Boys", "The Littlest Hobo"
+      ]
+    },
+    actions: {
+      easy: [
+        "Playing hockey", "Skating on a frozen pond", "Shoveling snow", "Paddling a canoe", "Eating poutine",
+        "Pouring maple syrup", "Saying sorry", "Holding the door for everyone", "Building a snow fort",
+        "Tapping a maple tree", "Tobogganing", "Wearing a toque", "Scoring a goal", "Swatting black flies",
+        "Fishing off a dock", "Singing O Canada", "Waving the Canadian flag", "Drinking a double-double"
+      ],
+      hard: [
+        "Curling", "Ice fishing", "Sweeping a curling stone", "Making maple taffy on snow", "Log rolling",
+        "Snowshoeing", "Dogsledding", "Portaging a canoe", "Dropping the puck", "Sitting in the penalty box",
+        "Spotting a moose on the highway", "Driving a Zamboni", "Apologizing to a door", "Skating on the Rideau Canal",
+        "Street hockey, yelling 'Car!'", "Plugging in your car in winter", "Scraping ice off a windshield",
+        "Waiting in a Tim Hortons drive-thru", "Mountie riding a horse"
+      ]
+    },
+    books: {
+      easy: [
+        "Anne of Green Gables", "The Hockey Sweater", "The Paper Bag Princess", "Mortimer", "Life of Pi",
+        "The Handmaid's Tale", "Franklin in the Dark", "Owls in the Family", "Alligator Pie", "Thomas' Snowsuit",
+        "Big Bear Hug"
+      ],
+      hard: [
+        "The English Patient", "Fifth Business", "Who Has Seen the Wind", "Never Cry Wolf", "The Incredible Journey",
+        "Station Eleven", "Oryx and Crake", "In Flanders Fields", "The Cremation of Sam McGee",
+        "Jacob Two-Two Meets the Hooded Fang", "Two Solitudes", "Roughing It in the Bush", "Emily of New Moon",
+        "The Blind Assassin", "Lives of Girls and Women"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Sorry!", "Eh?", "Happy Canada Day!", "Take off, eh!", "Beauty, eh?", "Give'r!", "Hoser", "From sea to sea",
+        "Loonies and toonies", "He shoots, he scores!", "Hey, bud", "Want a Timbit?", "Two-four",
+        "The true north strong and free", "Keep your stick on the ice"
+      ],
+      hard: [
+        "Peace, order and good government", "With glowing hearts", "We stand on guard for thee",
+        "The Mounties always get their man", "Hockey Night in Canada", "Kraft Dinner", "Chesterfield",
+        "Canadian tuxedo", "Snowbirds heading south", "Two seasons: winter and construction",
+        "Everything's better with maple syrup", "Gong show", "Out for a rip", "Pardon my French", "Glorious and free"
+      ]
+    },
+    chars: {
+      easy: [
+        "Mountie", "Beaver", "Moose", "Canada goose", "Lumberjack", "Polar bear", "Hockey goalie", "Celine Dion",
+        "Justin Bieber", "Drake", "Ryan Reynolds", "Wayne Gretzky", "Anne Shirley", "Chase from PAW Patrol",
+        "Franklin the Turtle", "Loon", "Snowplow driver"
+      ],
+      hard: [
+        "Terry Fox", "Sidney Crosby", "Shania Twain", "Avril Lavigne", "Jim Carrey", "Michael J. Fox",
+        "William Shatner", "Alex Trebek", "Dudley Do-Right", "Bob and Doug McKenzie", "Red Green", "Laura Secord",
+        "Alexander Graham Bell", "Moira Rose", "Mike Myers", "Hockey mom", "Zamboni driver"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

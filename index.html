@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Holiday Charades</title>
-<meta name="description" content="Phone-friendly charades for every holiday: Halloween, Christmas, Thanksgiving, New Year's, Valentine's, St. Patrick's, Easter and the Fourth of July.">
+<meta name="description" content="Phone-friendly charades for every holiday: Halloween, Christmas, Thanksgiving, New Year's, Valentine's, St. Patrick's, Easter, Canada Day and the Fourth of July.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chewy&family=Creepster&family=Limelight&family=Mountains+of+Christmas:wght@700&family=Nunito:wght@600;800;900&family=Pacifico&family=Rye&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bungee&family=Chewy&family=Creepster&family=Limelight&family=Mountains+of+Christmas:wght@700&family=Nunito:wght@600;800;900&family=Pacifico&family=Rye&family=Uncial+Antiqua&display=swap" rel="stylesheet">
 <style>
   :root { color-scheme: dark; --bg: #0d0b14; --ink: #f7f4ff; --muted: #a7a1bd; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -98,6 +98,8 @@ const HOLIDAYS = [
     bg: "#04170e", card: "#0f3822", ink: "#f3fff4", muted: "#a3d4b0", title: "#ffd447", accent: "#2ecc71", accentInk: "#022110", font: "Uncial Antiqua" },
   { path: "easter", name: "Easter", emoji: "🐰", date: easter,
     bg: "#f3e9ff", card: "#ffffff", ink: "#3b2a4d", muted: "#7d6a96", title: "#ff6fa8", accent: "#9b6bff", accentInk: "#ffffff", font: "Chewy" },
+  { path: "canada-day", name: "Canada Day", emoji: "🍁", date: y => new Date(y, 6, 1),
+    bg: "#1c0507", card: "#4a1512", ink: "#fff6f4", muted: "#e0b0aa", title: "#ffffff", accent: "#e8362a", accentInk: "#ffffff", font: "Alfa Slab One" },
   { path: "fourth-of-july", name: "Fourth of July", emoji: "🎆", date: y => new Date(y, 6, 4),
     bg: "#0a1230", card: "#1a2a5e", ink: "#f7f9ff", muted: "#a9b6e0", title: "#ffffff", accent: "#e63946", accentInk: "#ffffff", font: "Bungee" }
 ];

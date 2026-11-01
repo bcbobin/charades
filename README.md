@@ -13,6 +13,7 @@ URL and theme on top of the same layout and game engine.
 | `/valentines/` | Sweetheart Charades 💘 |
 | `/st-patricks/` | Lucky Charades 🍀 |
 | `/easter/` | Hoppy Charades 🐰 |
+| `/canada-day/` | True North Charades 🍁 |
 | `/fourth-of-july/` | Firework Charades 🎆 |
 
 ## How it's put together
