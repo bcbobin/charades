@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#04170e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>St. Patrick's Day Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍀</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Uncial Antiqua"; --title-spacing: 1px;
+    --title-size: clamp(26px, 9.2vw, 46px); --timer-size: clamp(56px, 19vw, 84px); --timesup-size: 44px;
+    --bg: #04170e; --bg2: #082315; --card: #0d301d;
+    --ink: #f3fff4; --muted: #a3d4b0;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #020b06;
+    --glow-top: #0f5a32; --glow-bottom: #4a3a05; --act-glow: #0e4528;
+    --title: #ffd447; --title-shadow: 0 0 18px rgba(46,204,113,.55), 0 3px 0 #0b5a2c;
+    --accent: #2ecc71; --accent-hi: #5fe394; --accent-ink: #022110; --accent-shadow: #11703a;
+    --good: #ffd447; --good-hi: #ffe58a; --good-ink: #2a2000; --good-shadow: #8a6d00;
+    --bad: #ff6b5b; --bad-hi: #ff978b; --bad-ink: #300500; --bad-shadow: #8a2014;
+    --c-songs: #5fe394; --c-movies: #ffd447; --c-actions: #8ef0c0;
+    --c-books: #ffb36b; --c-quotes: #ff978b; --c-chars: #b8f26b;
+    --fx-opacity: .3;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "st-patricks",
+  title: "Lucky Charades",
+  deco: "🍀 🌈 🪙 🎩 🍀",
+  particles: ["☘️", "🍀"], particleMotion: "fall",
+  teams: ["🍀 Shamrocks", "🌈 Leprechauns"],
+  modes: { easy: "🍀 Easy", hard: "🐍 Hard" },
+  labels: { chars: "☘️ Character" },
+  words: {
+    songs: {
+      easy: [
+        "Danny Boy", "I'm Shipping Up to Boston", "Galway Girl", "Come On Eileen", "Get Lucky", "Lucky",
+        "Luck Be a Lady", "Lucky Star", "Somewhere Over the Rainbow", "Rainbow Connection", "Beautiful Day",
+        "With or Without You", "Zombie", "Linger", "Dreams", "Only Time", "Molly Malone", "Bein' Green"
+      ],
+      hard: [
+        "Whiskey in the Jar", "The Irish Rover", "Tell Me Ma", "When Irish Eyes Are Smiling", "The Wild Rover",
+        "Black Velvet Band", "Orinoco Flow", "Sunday Bloody Sunday", "Breathless", "Green Onions", "Rainbow",
+        "Lucky Man", "Rocky Road to Dublin", "The Fields of Athenry", "Raglan Road",
+        "I Still Haven't Found What I'm Looking For", "Riverdance"
+      ]
+    },
+    movies: {
+      easy: [
+        "Luck", "The Luck of the Irish", "Leap Year", "P.S. I Love You", "The Wizard of Oz", "Just My Luck",
+        "Green Lantern", "Far and Away", "The Mask", "Shrek"
+      ],
+      hard: [
+        "Darby O'Gill and the Little People", "Finian's Rainbow", "Waking Ned Devine", "The Secret of Kells",
+        "Song of the Sea", "Wolfwalkers", "The Quiet Man", "Once", "The Banshees of Inisherin", "Belfast",
+        "Sing Street", "Brooklyn", "Fried Green Tomatoes", "Green Book", "The Commitments", "My Left Foot",
+        "Michael Collins"
+      ]
+    },
+    actions: {
+      easy: [
+        "Doing an Irish jig", "Pinching someone not wearing green", "Finding a four-leaf clover", "Chasing a leprechaun",
+        "Following a rainbow", "Finding a pot of gold", "Marching in a parade", "Playing the bagpipes",
+        "Playing the fiddle", "Dyeing a river green", "Eating Lucky Charms", "Crossing your fingers",
+        "Painting your face green", "Wearing a giant green hat", "Kissing the Blarney Stone", "Playing a tin whistle",
+        "Clicking your heels", "Making a wish"
+      ],
+      hard: [
+        "Building a leprechaun trap", "Leprechaun hiding his gold", "Knocking on wood", "Throwing salt over your shoulder",
+        "Picking up a lucky penny", "Hanging a horseshoe", "Rubbing a rabbit's foot", "Driving the snakes out of Ireland",
+        "Cooking corned beef and cabbage", "Baking soda bread", "Herding sheep", "Climbing a castle tower",
+        "Rolling a lucky seven", "Winning the lottery", "Walking under a ladder", "Shamrock Shake brain freeze",
+        "Standing on the Cliffs of Moher", "Doing Riverdance"
+      ]
+    },
+    books: {
+      easy: [
+        "How to Catch a Leprechaun", "The Night Before St. Patrick's Day", "There Was an Old Lady Who Swallowed a Clover!",
+        "Pete the Cat: The Great Leprechaun Chase", "Green Eggs and Ham", "The Rainbow Fish", "Artemis Fowl",
+        "Gulliver's Travels", "Dracula"
+      ],
+      hard: [
+        "Ulysses", "Angela's Ashes", "Room", "The Boy in the Striped Pajamas", "Skulduggery Pleasant",
+        "Jamie O'Rourke and the Big Potato", "Fiona's Luck", "Too Many Leprechauns", "The Luckiest Leprechaun",
+        "A Rainbow of My Own", "Dubliners", "Waiting for Godot", "The Importance of Being Earnest",
+        "The Picture of Dorian Gray", "Normal People"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Kiss me, I'm Irish!", "Luck of the Irish", "Top o' the morning to ya!", "Lucky charm", "Pot of gold",
+        "Green with envy", "Fingers crossed", "Knock on wood", "Beginner's luck", "Lady Luck", "Feeling lucky",
+        "Lucky duck", "They're magically delicious!", "Happy St. Patrick's Day!", "Green thumb",
+        "Lucky number seven", "Good luck!"
+      ],
+      hard: [
+        "May the road rise to meet you", "Better lucky than good", "Luck runs out", "Third time's the charm",
+        "The grass is always greener", "Green light", "Push your luck", "Pinch me", "As luck would have it",
+        "The gift of the gab", "Strike it rich", "Hit the jackpot", "Lucky streak", "Sláinte!", "Erin go bragh",
+        "Tough luck", "Down on your luck", "Wearing of the green"
+      ]
+    },
+    chars: {
+      easy: [
+        "Leprechaun", "Saint Patrick", "Lucky the Leprechaun", "Shamrock", "Irish dancer", "Bagpiper",
+        "Kermit the Frog", "The Hulk", "Oscar the Grouch", "Sheep", "Four-leaf clover", "Snake", "Fiddler",
+        "Tinker Bell", "Gumby"
+      ],
+      hard: [
+        "Elphaba", "Darby O'Gill", "Bono", "Banshee", "Selkie", "Finn McCool", "Druid", "Green Goblin", "Poison Ivy",
+        "Celtic warrior", "Fairy king", "Mike Wazowski", "Yoda", "Shamrock Shake"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

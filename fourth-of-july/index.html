@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0a1230">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Fourth of July Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎆</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Bungee"; --title-spacing: 0;
+    --title-size: clamp(22px, 6.9vw, 34px); --timer-size: clamp(56px, 19vw, 84px); --timesup-size: 40px;
+    --bg: #0a1230; --bg2: #0f1a40; --card: #15224f;
+    --ink: #f7f9ff; --muted: #a9b6e0;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #050a1c;
+    --glow-top: #1d2f7a; --glow-bottom: #5a0f1c; --act-glow: #17286a;
+    --title: #ffffff; --title-shadow: 2px 2px 0 #e63946, 4px 4px 0 #3a6bff;
+    --accent: #e63946; --accent-hi: #ff5f6b; --accent-ink: #ffffff; --accent-shadow: #8a1520;
+    --good: #4cd480; --good-hi: #7ee3a3; --good-ink: #00301a; --good-shadow: #1d8048;
+    --bad: #ff5f6b; --bad-hi: #ff8a93; --bad-ink: #300005; --bad-shadow: #8a1520;
+    --c-songs: #ff5f6b; --c-movies: #8ab4ff; --c-actions: #4cd480;
+    --c-books: #ffd166; --c-quotes: #ff8a93; --c-chars: #ffffff;
+    --fx-opacity: .45;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "fourth-of-july",
+  title: "Firework Charades",
+  deco: "🎆 ⭐ 🌭 🎇 🎆",
+  particles: ["✦", "★", "✨"], particleMotion: "fall",
+  teams: ["🎆 Fireworks", "🦅 Eagles"],
+  modes: { easy: "🌭 Easy", hard: "🧨 Hard" },
+  labels: { chars: "🗽 Character" },
+  words: {
+    songs: {
+      easy: [
+        "Party in the U.S.A.", "Born in the U.S.A.", "Firework", "The Star-Spangled Banner", "America the Beautiful",
+        "God Bless America", "Yankee Doodle", "This Land Is Your Land", "Surfin' U.S.A.", "American Pie",
+        "Summer of '69", "Summer Nights", "Kokomo", "California Gurls", "New York, New York", "Sweet Home Alabama",
+        "Free Fallin'"
+      ],
+      hard: [
+        "God Bless the U.S.A.", "Living in America", "R.O.C.K. in the U.S.A.", "American Idiot", "American Girl",
+        "Pink Houses", "Courtesy of the Red, White and Blue", "You're a Grand Old Flag", "Stars and Stripes Forever",
+        "Back in the U.S.A.", "Empire State of Mind", "Viva Las Vegas", "Cruel Summer", "The Boys of Summer",
+        "Island in the Sun", "Summertime", "My Country, 'Tis of Thee", "Battle Hymn of the Republic", "Cherry Bomb"
+      ]
+    },
+    movies: {
+      easy: [
+        "Independence Day", "National Treasure", "Captain America: The First Avenger", "Jaws", "Hamilton", "The Sandlot",
+        "Top Gun", "Forrest Gump", "Night at the Museum", "The Patriot", "Air Force One", "Apollo 13",
+        "The Parent Trap"
+      ],
+      hard: [
+        "Born on the Fourth of July", "Yankee Doodle Dandy", "Mr. Smith Goes to Washington", "1776", "Lincoln",
+        "Hidden Figures", "Miracle", "American Graffiti", "The American President", "Glory", "Dave",
+        "The Right Stuff", "Legally Blonde 2: Red, White & Blonde", "An American Tail"
+      ]
+    },
+    actions: {
+      easy: [
+        "Lighting fireworks", "Waving a sparkler", "Grilling hot dogs", "Flipping burgers", "Hot dog eating contest",
+        "Marching in a parade", "Saluting the flag", "Waving a flag", "Watching fireworks",
+        "Covering your ears at fireworks", "Eating watermelon", "Spitting watermelon seeds", "Three-legged race",
+        "Water balloon fight", "Running through a sprinkler", "Cannonball into a pool", "Swatting mosquitoes",
+        "Putting on sunscreen", "Tug of war", "Roasting marshmallows"
+      ],
+      hard: [
+        "Signing the Declaration of Independence", "Ringing the Liberty Bell", "Paul Revere's ride",
+        "Crossing the Delaware", "Statue of Liberty pose", "Pledge of Allegiance", "Folding a flag",
+        "Uncle Sam pointing", "Dog hiding from fireworks", "Getting a sunburn", "Melting popsicle", "Playing cornhole",
+        "Launching a bottle rocket", "Writing your name with a sparkler", "Ice cream brain freeze", "Grill flare-up",
+        "Twirling a baton", "Throwing tea into the harbor", "Playing horseshoes"
+      ]
+    },
+    books: {
+      easy: [
+        "The Adventures of Tom Sawyer", "Adventures of Huckleberry Finn", "Charlotte's Web", "Little House on the Prairie",
+        "The Night Before the Fourth of July", "Where the Red Fern Grows", "The Call of the Wild",
+        "Diary of a Wimpy Kid: Dog Days"
+      ],
+      hard: [
+        "Johnny Tremain", "Common Sense", "Uncle Tom's Cabin", "The Federalist Papers", "Grace for President",
+        "Ben and Me", "The Firework-Maker's Daughter", "Sam the Minuteman", "Of Thee I Sing", "On the Road",
+        "Revolutionary War on Wednesday", "The Last of the Mohicans", "The Red Badge of Courage", "Leaves of Grass"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Happy Fourth of July!", "Land of the free", "Home of the brave", "Red, white and blue", "Ooh! Aah!",
+        "Stars and stripes", "Let freedom ring", "Liberty and justice for all", "I want YOU", "Hot diggity dog!",
+        "Born free", "Light it up!", "One nation", "Fire in the hole!", "Free country"
+      ],
+      hard: [
+        "Give me liberty or give me death!", "We hold these truths to be self-evident", "Don't tread on me",
+        "One if by land, two if by sea", "The British are coming!", "Life, liberty and the pursuit of happiness",
+        "Four score and seven years ago", "Ask not what your country can do for you", "United we stand, divided we fall",
+        "E pluribus unum", "We the People", "Don't fire until you see the whites of their eyes", "Dog days of summer",
+        "Freedom isn't free", "Fireworks finale"
+      ]
+    },
+    chars: {
+      easy: [
+        "Uncle Sam", "Statue of Liberty", "George Washington", "Abraham Lincoln", "Bald eagle", "Captain America",
+        "Benjamin Franklin", "Lifeguard", "Hot dog", "Ice cream truck driver", "Cheerleader", "Astronaut", "Cowboy",
+        "Mount Rushmore", "Liberty Bell", "Firefly"
+      ],
+      hard: [
+        "Paul Revere", "Betsy Ross", "Thomas Jefferson", "John Hancock", "Alexander Hamilton", "Smokey Bear",
+        "Joey Chestnut", "Rosie the Riveter", "Johnny Appleseed", "Davy Crockett", "Lewis and Clark", "Abigail Adams",
+        "Neil Armstrong", "Minuteman", "Drum major"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

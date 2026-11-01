@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0b14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Holiday Charades</title>
+<meta name="description" content="Phone-friendly charades for every holiday: Halloween, Christmas, Thanksgiving, New Year's, Valentine's, St. Patrick's, Easter and the Fourth of July.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chewy&family=Creepster&family=Limelight&family=Mountains+of+Christmas:wght@700&family=Nunito:wght@600;800;900&family=Pacifico&family=Rye&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; --bg: #0d0b14; --ink: #f7f4ff; --muted: #a7a1bd; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background:
+      radial-gradient(ellipse at 15% -5%, #ff7a1a2e 0%, transparent 45%),
+      radial-gradient(ellipse at 90% 10%, #ff4d8d2a 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 110%, #2ecc7124 0%, transparent 55%),
+      var(--bg);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: "Nunito", system-ui, -apple-system, sans-serif;
+  }
+  .wrap {
+    max-width: 560px; margin: 0 auto;
+    padding: calc(env(safe-area-inset-top) + 22px) 16px calc(env(safe-area-inset-bottom) + 24px);
+  }
+  header { text-align: center; margin-bottom: 18px; }
+  .mask { font-size: 40px; line-height: 1; }
+  h1 {
+    margin: 6px 0 4px; font-weight: 900; font-size: clamp(34px, 10vw, 46px); letter-spacing: -.5px; line-height: 1.05;
+    background: linear-gradient(90deg, #ff9a45, #ff85b0 35%, #f5c542 65%, #5fe394);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { margin: 0; color: var(--muted); font-weight: 700; font-size: 15px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card {
+    position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 148px; padding: 14px; border-radius: 20px; text-decoration: none;
+    color: var(--h-ink); background: linear-gradient(155deg, var(--h-card), var(--h-bg));
+    border: 2px solid color-mix(in srgb, var(--h-accent) 55%, transparent);
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--h-accent) 35%, #000), 0 0 18px color-mix(in srgb, var(--h-accent) 16%, transparent);
+    transition: transform .08s;
+    animation: pop .4s ease both;
+  }
+  .card:active { transform: translateY(3px) scale(.98); }
+  .card .emoji { font-size: 38px; line-height: 1; }
+  .card .name {
+    font-family: var(--h-font), "Nunito", cursive; font-weight: var(--h-weight, 400);
+    font-size: 22px; line-height: 1.1; color: var(--h-title); margin-top: 10px;
+  }
+  .card .when { font-size: 13px; font-weight: 800; color: var(--h-muted); margin-top: 4px; }
+  .card .badge {
+    position: absolute; top: 12px; right: 12px; padding: 4px 9px; border-radius: 999px;
+    background: var(--h-accent); color: var(--h-accent-ink); font-size: 11px; font-weight: 900;
+    letter-spacing: .5px; text-transform: uppercase;
+  }
+  .card .go { position: absolute; right: 14px; bottom: 12px; font-size: 20px; font-weight: 900; color: var(--h-accent); }
+  .card.featured { grid-column: 1 / -1; min-height: 168px; }
+  .card.featured .emoji { font-size: 52px; }
+  .card.featured .name { font-size: 32px; }
+  .card.featured .when { font-size: 15px; }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .card { animation: none; } }
+  footer { text-align: center; color: var(--muted); font-size: 13px; font-weight: 700; margin-top: 22px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mask">🎭</div>
+    <h1>Holiday Charades</h1>
+    <p class="sub">Pick a holiday. Two teams, one phone.</p>
+  </header>
+  <nav class="grid" id="grid" aria-label="Holidays"></nav>
+  <footer>Tip: add a holiday to your home screen to play full-screen.</footer>
+</div>
+<script>
+// Each holiday's colors mirror the tokens on its own page.
+const HOLIDAYS = [
+  { path: "halloween", name: "Halloween", emoji: "🎃", date: y => new Date(y, 9, 31),
+    bg: "#120a1f", card: "#2a1747", ink: "#f6eedd", muted: "#b9a8d6", title: "#ff7a1a", accent: "#ff7a1a", accentInk: "#1a0b00", font: "Creepster" },
+  { path: "thanksgiving", name: "Thanksgiving", emoji: "🦃", date: y => nthWeekday(y, 10, 4, 4),
+    bg: "#1f120a", card: "#3f2814", ink: "#fff3e0", muted: "#d6b894", title: "#f4c95d", accent: "#e8871e", accentInk: "#2a1300", font: "Rye" },
+  { path: "christmas", name: "Christmas", emoji: "🎄", date: y => new Date(y, 11, 25),
+    bg: "#0b1f17", card: "#1a3d2d", ink: "#fff8ec", muted: "#a9c9b5", title: "#ffd166", accent: "#e63946", accentInk: "#ffffff", font: "Mountains of Christmas", weight: 700 },
+  { path: "new-years", name: "New Year's Eve", emoji: "🥂", date: y => new Date(y, 11, 31),
+    bg: "#07070f", card: "#1c1c33", ink: "#fffaf0", muted: "#a8a6c8", title: "#f5c542", accent: "#f5c542", accentInk: "#1c1500", font: "Limelight" },
+  { path: "valentines", name: "Valentine's Day", emoji: "💘", date: y => new Date(y, 1, 14),
+    bg: "#22060f", card: "#471226", ink: "#fff0f4", muted: "#e3a9bd", title: "#ff85b0", accent: "#ff4d8d", accentInk: "#3a0016", font: "Pacifico" },
+  { path: "st-patricks", name: "St. Patrick's Day", emoji: "🍀", date: y => new Date(y, 2, 17),
+    bg: "#04170e", card: "#0f3822", ink: "#f3fff4", muted: "#a3d4b0", title: "#ffd447", accent: "#2ecc71", accentInk: "#022110", font: "Uncial Antiqua" },
+  { path: "easter", name: "Easter", emoji: "🐰", date: easter,
+    bg: "#f3e9ff", card: "#ffffff", ink: "#3b2a4d", muted: "#7d6a96", title: "#ff6fa8", accent: "#9b6bff", accentInk: "#ffffff", font: "Chewy" },
+  { path: "fourth-of-july", name: "Fourth of July", emoji: "🎆", date: y => new Date(y, 6, 4),
+    bg: "#0a1230", card: "#1a2a5e", ink: "#f7f9ff", muted: "#a9b6e0", title: "#ffffff", accent: "#e63946", accentInk: "#ffffff", font: "Bungee" }
+];
+
+// n-th given weekday (0 = Sunday) of a month, e.g. Thanksgiving is the 4th Thursday of November.
+function nthWeekday(y, month, weekday, n) {
+  const first = new Date(y, month, 1).getDay();
+  return new Date(y, month, 1 + ((weekday - first + 7) % 7) + (n - 1) * 7);
+}
+// Western Easter Sunday (Anonymous Gregorian algorithm).
+function easter(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
+  const f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31), day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(y, month - 1, day);
+}
+
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+for (const h of HOLIDAYS) {
+  let d = h.date(today.getFullYear());
+  if (d < today) d = h.date(today.getFullYear() + 1);
+  h.next = d;
+  h.days = Math.round((d - today) / 864e5);
+}
+// Soonest holiday first, so the one coming up is always on top.
+HOLIDAYS.sort((a, b) => a.days - b.days);
+
+const fmt = new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" });
+const grid = document.getElementById("grid");
+HOLIDAYS.forEach((h, i) => {
+  const a = document.createElement("a");
+  a.className = "card" + (i === 0 ? " featured" : "");
+  a.href = h.path + "/";
+  a.style.cssText = `--h-bg:${h.bg};--h-card:${h.card};--h-ink:${h.ink};--h-muted:${h.muted};--h-title:${h.title};` +
+    `--h-accent:${h.accent};--h-accent-ink:${h.accentInk};--h-font:"${h.font}";--h-weight:${h.weight || 400};animation-delay:${i * 40}ms`;
+  const when = h.days === 0 ? "Today!" : h.days === 1 ? "Tomorrow" : `${fmt.format(h.next)} · in ${h.days} days`;
+  a.innerHTML = `${i === 0 ? `<span class="badge">${h.days === 0 ? "Today" : "Up next"}</span>` : ""}
+    <div><div class="emoji"></div><div class="name"></div><div class="when"></div></div><span class="go">›</span>`;
+  a.querySelector(".emoji").textContent = h.emoji;
+  a.querySelector(".name").textContent = h.name;
+  a.querySelector(".when").textContent = when;
+  grid.appendChild(a);
+});
+</script>
+</body>
+</html>

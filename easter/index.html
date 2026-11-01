@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#fdf6ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Easter Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐰</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  /* The one light theme: same tokens, inverted values. */
+  :root {
+    color-scheme: light;
+    --font-display: "Chewy"; --title-spacing: 1px;
+    --bg: #fdf6ff; --bg2: #f3e9ff; --card: #ffffff;
+    --ink: #3b2a4d; --muted: #7d6a96;
+    --chip: #3b2a4d14; --line: #3b2a4d22; --ghost-shadow: #dccbef; --card-drop: #fff;
+    --glow-top: #ffd9ec; --glow-bottom: #d4f5e2; --act-glow: #f6e4ff;
+    --scrim: #3b2a4d80;
+    --title: #ff6fa8; --title-shadow: 0 3px 0 #c24e80, 0 0 18px rgba(255,111,168,.35);
+    --accent: #9b6bff; --accent-hi: #b896ff; --accent-ink: #ffffff; --accent-shadow: #5f3cc0;
+    --good: #45c27e; --good-hi: #72d79e; --good-ink: #ffffff; --good-shadow: #23824f;
+    --bad: #ff6b8e; --bad-hi: #ff94ae; --bad-ink: #ffffff; --bad-shadow: #c23e60;
+    --c-songs: #e0559a; --c-movies: #8a5cf6; --c-actions: #2fa866;
+    --c-books: #d97a0f; --c-quotes: #e0475f; --c-chars: #2b8fc9;
+    --fx-opacity: .55;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "easter",
+  title: "Hoppy Charades",
+  deco: "🌷 🐰 🥚 🐣 🌷",
+  particles: ["🌸", "🌼", "🌷"], particleMotion: "fall",
+  teams: ["🐰 Bunnies", "🐣 Chicks"],
+  modes: { easy: "🐣 Easy", hard: "🥚 Hard" },
+  labels: { chars: "🐰 Character" },
+  words: {
+    songs: {
+      easy: [
+        "Here Comes Peter Cottontail", "Easter Parade", "Bunny Hop", "Walking on Sunshine", "Here Comes the Sun",
+        "Lovely Day", "Three Little Birds", "Singin' in the Rain", "Itsy Bitsy Spider", "Jump", "Jump Around",
+        "Rockin' Robin", "Flowers", "Sugar, Sugar", "Lollipop", "Good Day Sunshine", "Oh Happy Day",
+        "You Are My Sunshine"
+      ],
+      hard: [
+        "Hop Little Bunnies", "Little Peter Rabbit", "Raindrops Keep Fallin' on My Head", "April Showers",
+        "Jump in the Line", "Rise Up", "White Rabbit", "Here Comes the Rain Again", "Feeling Good", "Mr. Blue Sky",
+        "Good Vibrations", "Bright Eyes", "Sunshine on My Shoulders", "Blackbird", "Chocolate Rain"
+      ]
+    },
+    movies: {
+      easy: [
+        "Hop", "Rise of the Guardians", "Peter Rabbit", "Zootopia", "Who Framed Roger Rabbit", "Bambi", "Chicken Run",
+        "Wonka", "The Secret Life of Pets", "Chicken Little", "Space Jam", "Babe", "Rio", "Over the Hedge"
+      ],
+      hard: [
+        "It's the Easter Beagle, Charlie Brown", "Hoodwinked!", "The Prince of Egypt", "Watership Down",
+        "Wallace & Gromit: The Curse of the Were-Rabbit", "Fly Away Home", "Harvey", "Jojo Rabbit", "Miss Potter",
+        "The Ten Commandments", "Rabbit-Proof Fence", "Charlotte's Web", "Willy Wonka & the Chocolate Factory"
+      ]
+    },
+    actions: {
+      easy: [
+        "Easter egg hunt", "Dyeing eggs", "Hopping like a bunny", "Egg and spoon race", "Sack race",
+        "Biting the ears off a chocolate bunny", "Filling an Easter basket", "Hatching from an egg", "Planting flowers",
+        "Flying a kite", "Picking flowers", "Jumping in puddles", "Opening an umbrella", "Smelling flowers",
+        "Wiggling your bunny nose", "Hiding eggs", "Egg toss", "Cracking an egg", "Wearing bunny ears"
+      ],
+      hard: [
+        "Egg rolling", "Spring cleaning", "Finding a forgotten egg weeks later", "Wearing an Easter bonnet",
+        "Cracking a confetti egg on someone's head", "Photo with the Easter Bunny", "Eating jelly beans",
+        "Unwrapping a chocolate egg", "Birdwatching", "Bird building a nest", "Caterpillar turning into a butterfly",
+        "Spring break at the beach", "Baking hot cross buns", "Blowing on a dandelion", "Bee pollinating flowers",
+        "Getting caught in an April shower", "Sugar rush", "Sneezing from pollen"
+      ]
+    },
+    books: {
+      easy: [
+        "The Tale of Peter Rabbit", "The Velveteen Rabbit", "Hop on Pop", "The Runaway Bunny", "Goodnight Moon",
+        "Pat the Bunny", "The Very Hungry Caterpillar", "Make Way for Ducklings", "The Ugly Duckling",
+        "How to Catch the Easter Bunny", "Horton Hatches the Egg", "Alice in Wonderland", "The Secret Garden"
+      ],
+      hard: [
+        "The Country Bunny and the Little Gold Shoes", "Knuffle Bunny", "The Easter Egg",
+        "Pete the Cat: Big Easter Adventure", "There Was an Old Lady Who Swallowed a Chick!", "Miss Rumphius",
+        "Bunny Cakes", "Duck! Rabbit!", "Henny Penny", "Chickens Aren't the Only Ones", "Rechenka's Eggs",
+        "An Egg Is Quiet", "Planting a Rainbow"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Hoppy Easter!", "Some bunny loves you", "Egg-cellent!", "Don't put all your eggs in one basket",
+        "What's up, Doc?", "Spring has sprung", "April showers bring May flowers", "Good egg", "Egg on your face",
+        "Walking on eggshells", "Which came first, the chicken or the egg?", "Sunny side up", "Rise and shine",
+        "Fresh as a daisy", "Busy as a bee", "Be very, very quiet, I'm hunting wabbits"
+      ],
+      hard: [
+        "Down the rabbit hole", "Pull a rabbit out of a hat", "Mad as a March hare", "I'm late for a very important date!",
+        "Bad egg", "Nest egg", "Hatch a plan", "Spring fever", "Spring in your step", "Stop and smell the roses",
+        "Hare-brained idea", "Hop to it!", "Egghead", "Over easy", "Every bunny welcome", "Cracking up"
+      ]
+    },
+    chars: {
+      easy: [
+        "Easter Bunny", "Bugs Bunny", "Baby chick", "Mother hen", "Lamb", "Butterfly", "Caterpillar", "Bee", "Thumper",
+        "Judy Hopps", "Humpty Dumpty", "Mad Hatter", "Energizer Bunny", "Roger Rabbit", "Chocolate bunny", "Duckling"
+      ],
+      hard: [
+        "March Hare", "Bunnymund", "Snowball from The Secret Life of Pets", "Easter Beagle", "Lola Bunny",
+        "Trix Rabbit", "Miffy", "Max and Ruby", "Cadbury Bunny", "Marshmallow Peep", "Robin",
+        "Rabbit from Winnie-the-Pooh", "Goose that laid the golden egg", "Elmer Fudd", "Br'er Rabbit", "Willy Wonka"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

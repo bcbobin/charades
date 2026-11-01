@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0b1f17">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Christmas Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Mountains of Christmas"; --display-weight: 700; --title-spacing: 1px;
+    --title-size: clamp(40px, 12vw, 58px);
+    --bg: #0b1f17; --bg2: #10291f; --card: #163628;
+    --ink: #fff8ec; --muted: #a9c9b5;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #06120d;
+    --glow-top: #1d4d36; --glow-bottom: #4a0f16; --act-glow: #1a4430;
+    --title: #ffd166; --title-shadow: 0 0 18px rgba(230,57,70,.6), 0 3px 0 #7a1018;
+    --accent: #e63946; --accent-hi: #ff6b74; --accent-ink: #ffffff; --accent-shadow: #7a1018;
+    --good: #5fd38a; --good-hi: #8be6aa; --good-ink: #05301a; --good-shadow: #1f7a45;
+    --bad: #ff4d5e; --bad-hi: #ff7d89; --bad-ink: #2e0007; --bad-shadow: #8a1020;
+    --c-songs: #ff6b74; --c-movies: #ffd166; --c-actions: #5fd38a;
+    --c-books: #f4a261; --c-quotes: #a2d2ff; --c-chars: #f1faee;
+    --fx-opacity: .45; --fx-color: #ffffff;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "christmas",
+  title: "Jolly Charades",
+  deco: "🎄 🎅 ❄️ 🎁 ⛄",
+  particles: ["❄", "❅", "❆", "•"], particleMotion: "fall",
+  teams: ["🎅 Santas", "🧝 Elves"],
+  modes: { easy: "⛄ Easy", hard: "🥶 Hard" },
+  labels: { chars: "🎅 Character" },
+  words: {
+    songs: {
+      easy: [
+        "Jingle Bells", "Rudolph the Red-Nosed Reindeer", "Frosty the Snowman", "Deck the Halls", "Silent Night",
+        "We Wish You a Merry Christmas", "Santa Claus Is Coming to Town", "All I Want for Christmas Is You",
+        "Jingle Bell Rock", "Let It Snow!", "Feliz Navidad", "Here Comes Santa Claus", "Last Christmas",
+        "Up on the Housetop", "The Twelve Days of Christmas", "Rockin' Around the Christmas Tree", "Joy to the World",
+        "White Christmas", "Holly Jolly Christmas", "Sleigh Ride", "Winter Wonderland", "O Christmas Tree"
+      ],
+      hard: [
+        "O Holy Night", "Hark! The Herald Angels Sing", "Little Drummer Boy", "Carol of the Bells", "Silver Bells",
+        "Blue Christmas", "Baby, It's Cold Outside", "Have Yourself a Merry Little Christmas",
+        "It's the Most Wonderful Time of the Year", "Do You Hear What I Hear?", "Grandma Got Run Over by a Reindeer",
+        "I Saw Mommy Kissing Santa Claus", "Mistletoe", "Underneath the Tree", "Santa Baby", "Wonderful Christmastime",
+        "Run Rudolph Run", "Away in a Manger", "The Christmas Song", "Do They Know It's Christmas?",
+        "You're a Mean One, Mr. Grinch", "God Rest Ye Merry Gentlemen", "Good King Wenceslas",
+        "It's Beginning to Look a Lot Like Christmas", "I'll Be Home for Christmas", "Christmas Wrapping"
+      ]
+    },
+    movies: {
+      easy: [
+        "Home Alone", "Elf", "The Grinch", "The Polar Express", "The Santa Clause", "Jingle All the Way", "Die Hard",
+        "Miracle on 34th Street", "A Charlie Brown Christmas", "The Muppet Christmas Carol",
+        "Home Alone 2: Lost in New York", "Arthur Christmas", "Klaus", "A Christmas Story", "Frozen"
+      ],
+      hard: [
+        "It's a Wonderful Life", "National Lampoon's Christmas Vacation", "Love Actually", "The Holiday", "Scrooged",
+        "Four Christmases", "Fred Claus", "Christmas with the Kranks", "The Night Before", "Noelle",
+        "The Christmas Chronicles", "Holiday Inn", "The Family Stone", "Spirited", "Violent Night", "Red One",
+        "Prancer", "Ernest Saves Christmas", "Santa Claus: The Movie", "The Star", "Surviving Christmas"
+      ]
+    },
+    actions: {
+      easy: [
+        "Decorating the tree", "Wrapping presents", "Building a snowman", "Snowball fight", "Sledding",
+        "Hanging stockings", "Ice skating", "Baking cookies", "Kissing under the mistletoe", "Sitting on Santa's lap",
+        "Riding in a sleigh", "Reindeer flying", "Going down the chimney", "Caroling", "Making a snow angel",
+        "Shoveling snow", "Catching snowflakes on your tongue", "Putting the star on the tree",
+        "Leaving cookies for Santa", "Eating a candy cane", "Drinking hot cocoa", "Untangling Christmas lights",
+        "Opening a present"
+      ],
+      hard: [
+        "Pulling a Christmas cracker", "Re-gifting a present", "Peeking at presents", "Checking the naughty list",
+        "Assembling a toy", "Stringing popcorn garland", "Getting stuck in the chimney",
+        "Building a gingerbread house", "Shaking a present to guess it", "Getting socks as a gift",
+        "Writing a letter to Santa", "Pretending to love a gift", "Wearing an ugly sweater",
+        "Hanging lights on the roof", "Shaking a snow globe", "Rudolph's nose lighting up", "Feeding the reindeer",
+        "Last-minute shopping", "Cutting down a Christmas tree", "Drinking eggnog", "Roasting chestnuts",
+        "Opening an advent calendar", "Elf on the Shelf hiding"
+      ]
+    },
+    books: {
+      easy: [
+        "How the Grinch Stole Christmas", "A Christmas Carol", "The Gingerbread Baby", "The Night Before Christmas",
+        "The Nutcracker", "The Snowman", "The Mitten", "The Elf on the Shelf", "Pete the Cat Saves Christmas",
+        "The Lion, the Witch and the Wardrobe", "Olive, the Other Reindeer", "Llama Llama Holiday Drama"
+      ],
+      hard: [
+        "The Gift of the Magi", "The Best Christmas Pageant Ever", "Skipping Christmas", "The Jolly Christmas Postman",
+        "Little Women", "Snowmen at Night", "The Christmas Pig", "Father Christmas", "The Little Match Girl",
+        "The Snow Queen", "Mr. Willowby's Christmas Tree", "Auntie Claus", "The Elves and the Shoemaker",
+        "Bear Stays Up for Christmas", "Stick Man"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Ho ho ho!", "Merry Christmas!", "Bah humbug!", "All is calm, all is bright", "Naughty or nice",
+        "Keep the change, ya filthy animal", "You'll shoot your eye out!", "Son of a nutcracker!",
+        "Santa! I know him!", "God bless us, every one!", "Chestnuts roasting on an open fire",
+        "Dashing through the snow", "Peace on earth", "Season's greetings", "Under the mistletoe", "'Tis the season",
+        "Home for the holidays", "Twas the night before Christmas", "Coal in your stocking", "Snowed in"
+      ],
+      hard: [
+        "Every time a bell rings, an angel gets its wings", "Yes, Virginia, there is a Santa Claus",
+        "Seeing is believing", "The best way to spread Christmas cheer is singing loud for all to hear",
+        "I'm a cotton-headed ninny muggins", "It's a major award!", "Fra-gee-lay", "Eat, drink and be merry",
+        "Christmas came early", "Santa's little helper", "Not a creature was stirring", "Visions of sugarplums",
+        "Yippee-ki-yay", "Jolly old St. Nick", "Peace and goodwill", "Sleigh all day", "Dreaming of a white Christmas",
+        "Spread some cheer", "Making a list, checking it twice"
+      ]
+    },
+    chars: {
+      easy: [
+        "Santa Claus", "Mrs. Claus", "Rudolph", "Frosty", "Grinch", "Buddy the Elf", "Toymaker", "Reindeer",
+        "Gingerbread Man", "Snowman", "Angel", "Kevin McCallister", "Ebenezer Scrooge", "Olaf", "Toy soldier",
+        "Polar bear", "Penguin", "Nutcracker", "Snow globe", "Christmas tree"
+      ],
+      hard: [
+        "Cindy Lou Who", "Max the Grinch's dog", "Tiny Tim", "Ghost of Christmas Past", "Krampus", "Clark Griswold",
+        "Ralphie", "Hermey the Elf", "Bumble the Abominable Snowman", "Yukon Cornelius", "Sugar Plum Fairy",
+        "Mouse King", "Three Wise Men", "Hans Gruber", "George Bailey", "Clarence the Angel", "Blitzen",
+        "Jack Frost", "Charlie Brown", "Shepherd"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#22060f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Valentine's Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💘</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Pacifico"; --title-spacing: 0;
+    --title-size: clamp(28px, 9.4vw, 47px); --timer-size: clamp(56px, 19vw, 84px); --timesup-size: 46px;
+    --bg: #22060f; --bg2: #2f0a17; --card: #3d0f1f;
+    --ink: #fff0f4; --muted: #e3a9bd;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #120207;
+    --glow-top: #6b1435; --glow-bottom: #4a0a24; --act-glow: #4f0f28;
+    --title: #ff85b0; --title-shadow: 0 0 18px rgba(255,77,141,.6), 0 3px 0 #6b0a30;
+    --accent: #ff4d8d; --accent-hi: #ff85b0; --accent-ink: #3a0016; --accent-shadow: #8f1146;
+    --good: #7ee2a8; --good-hi: #a6edc4; --good-ink: #00301a; --good-shadow: #2a8a55;
+    --bad: #ff5a5a; --bad-hi: #ff8a8a; --bad-ink: #300000; --bad-shadow: #8a1414;
+    --c-songs: #ff85b0; --c-movies: #ffb3c7; --c-actions: #7ee2a8;
+    --c-books: #ffd6a5; --c-quotes: #ff5a5a; --c-chars: #d4a5ff;
+    --fx-opacity: .4;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "valentines",
+  title: "Sweetheart Charades",
+  deco: "💕 🌹 💘 🍫 💕",
+  particles: ["💕", "❤️", "💗"], particleMotion: "rise",
+  teams: ["💘 Cupids", "🍫 Sweethearts"],
+  modes: { easy: "🥰 Easy", hard: "💔 Hard" },
+  labels: { chars: "💘 Character" },
+  words: {
+    songs: {
+      easy: [
+        "Love Story", "All You Need Is Love", "Can't Help Falling in Love", "Perfect", "Thinking Out Loud", "Love Shack",
+        "Just the Way You Are", "I Want to Hold Your Hand", "Stand by Me", "Love Me Tender", "Kiss", "Marry You",
+        "Halo", "Lover", "Shallow", "Cupid Shuffle", "Achy Breaky Heart", "Heartbreak Hotel", "My Girl", "Sugar",
+        "Can You Feel the Love Tonight", "Crazy in Love", "My Heart Will Go On", "I Will Always Love You"
+      ],
+      hard: [
+        "Endless Love", "Unchained Melody", "Can't Take My Eyes Off You", "I Just Called to Say I Love You",
+        "Love On Top", "A Thousand Years", "All of Me", "Stupid Cupid", "Kiss from a Rose", "Don't Go Breaking My Heart",
+        "Love Is a Battlefield", "What's Love Got to Do with It", "Truly Madly Deeply", "Wildest Dreams", "At Last",
+        "Lady in Red", "Wonderful Tonight", "Bleeding Love", "Love Me Like You Do", "Teenage Dream", "Lovefool",
+        "Die With a Smile", "Love Will Keep Us Together", "Baby Love", "Kiss Me", "Total Eclipse of the Heart"
+      ]
+    },
+    movies: {
+      easy: [
+        "Titanic", "The Notebook", "Pretty Woman", "Lady and the Tramp", "Ghost", "Valentine's Day", "La La Land",
+        "Grease", "Beauty and the Beast", "10 Things I Hate About You", "Crazy Rich Asians", "Tangled",
+        "The Princess Bride", "Dirty Dancing", "Twilight", "Enchanted", "Shrek", "Up", "Mamma Mia!"
+      ],
+      hard: [
+        "When Harry Met Sally", "Sleepless in Seattle", "You've Got Mail", "Notting Hill", "50 First Dates",
+        "How to Lose a Guy in 10 Days", "The Proposal", "Crazy, Stupid, Love", "500 Days of Summer",
+        "Eternal Sunshine of the Spotless Mind", "Casablanca", "Roman Holiday", "Jerry Maguire", "Hitch",
+        "Say Anything", "The Wedding Singer", "My Big Fat Greek Wedding", "Love Actually", "A Walk to Remember",
+        "Gnomeo & Juliet", "Anyone But You", "Sixteen Candles"
+      ]
+    },
+    actions: {
+      easy: [
+        "Blowing a kiss", "Getting down on one knee", "Shooting Cupid's arrow", "Giving roses", "Eating chocolates",
+        "Writing a love letter", "Holding hands", "Slow dancing", "Making heart hands", "Falling head over heels",
+        "Swooning", "Candlelit dinner", "Spaghetti kiss", "Hugging a teddy bear", "Carving initials in a tree",
+        "Winking", "Serenading someone", "Opening a box of chocolates", "Love at first sight"
+      ],
+      hard: [
+        "Getting friend-zoned", "Being the third wheel", "First date nerves", "Waiting by the phone", "Getting stood up",
+        "Speed dating", "Loves me, loves me not", "Swiping on a dating app", "Making a mixtape", "Pulling out a chair",
+        "Sharing a milkshake with two straws", "Holding a boombox outside a window", "Breaking up", "Kissing in the rain",
+        "Picking out the perfect card", "Sneaking a valentine into a locker", "Dipping your partner",
+        "Riding a tandem bicycle", "Gondola ride", "Heart beating out of your chest", "Cutting out paper hearts"
+      ]
+    },
+    books: {
+      easy: [
+        "Romeo and Juliet", "Pride and Prejudice", "Guess How Much I Love You", "The Kissing Hand", "Love You Forever",
+        "I Love You to the Moon and Back", "The Fault in Our Stars", "Llama Llama I Love You", "Froggy's First Kiss",
+        "The Velveteen Rabbit", "Frog and Toad Are Friends", "Gone with the Wind"
+      ],
+      hard: [
+        "Jane Eyre", "Wuthering Heights", "Sense and Sensibility", "Emma", "Me Before You", "Outlander", "Bridgerton",
+        "The Hating Game", "The Day It Rained Hearts", "Anna Karenina", "Doctor Zhivago",
+        "The Bridges of Madison County", "Love in the Time of Cholera", "Persuasion", "Normal People",
+        "The Time Traveler's Wife"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Be mine", "I love you", "Will you marry me?", "XOXO", "Hugs and kisses", "Love is in the air",
+        "Head over heels", "Puppy love", "Lovebirds", "Kiss and make up", "Heartbreaker", "You complete me", "Soulmates",
+        "Cutie pie", "Happy Valentine's Day!", "Will you be my valentine?", "Roses are red, violets are blue",
+        "Match made in heaven", "Cross my heart", "Heart of gold"
+      ],
+      hard: [
+        "You had me at hello", "As you wish", "Here's looking at you, kid", "Nobody puts Baby in a corner",
+        "I'll never let go", "To me, you are perfect", "Love is blind", "Better half", "Wear your heart on your sleeve",
+        "Opposites attract", "Absence makes the heart grow fonder", "Plenty of fish in the sea", "Tie the knot",
+        "Pop the question", "Love conquers all", "Swept off my feet", "Starry-eyed", "Hopeless romantic",
+        "If you're a bird, I'm a bird", "Sealed with a kiss"
+      ]
+    },
+    chars: {
+      easy: [
+        "Cupid", "Teddy bear", "Lovebird", "Romeo", "Juliet", "Prince Charming", "Cinderella", "Fiona", "Minnie Mouse",
+        "Ken", "Frog prince", "Box of chocolates", "Rose", "Love bug", "Bride", "Groom", "Belle", "The Beast",
+        "Kermit and Miss Piggy"
+      ],
+      hard: [
+        "Jack Dawson", "Mr. Darcy", "Elizabeth Bennet", "Westley", "Casanova", "Aphrodite", "Saint Valentine",
+        "Cyrano de Bergerac", "Lloyd Dobler", "Johnny Castle", "Danny Zuko", "Sandy Olsson", "Edward Cullen",
+        "Carl and Ellie", "Secret admirer", "Matchmaker", "Wedding planner", "Cupid with bad aim", "Florist"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

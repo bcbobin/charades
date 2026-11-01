@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1f120a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Thanksgiving Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦃</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Rye"; --title-spacing: 1px;
+    --title-size: clamp(26px, 9.2vw, 46px); --timer-size: clamp(56px, 19vw, 84px); --timesup-size: 44px;
+    --bg: #1f120a; --bg2: #2b1a0e; --card: #3a2412;
+    --ink: #fff3e0; --muted: #d6b894;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #120a04;
+    --glow-top: #5a2d0c; --glow-bottom: #3d2a05; --act-glow: #4a2810;
+    --title: #f4c95d; --title-shadow: 0 0 16px rgba(232,135,30,.5), 0 3px 0 #6b2f05;
+    --accent: #e8871e; --accent-hi: #f4a340; --accent-ink: #2a1300; --accent-shadow: #7a3e05;
+    --good: #a3c94a; --good-hi: #c2e070; --good-ink: #1d2a00; --good-shadow: #5a7a12;
+    --bad: #d9483b; --bad-hi: #ec6e62; --bad-ink: #2a0500; --bad-shadow: #7a1a10;
+    --c-songs: #f4a340; --c-movies: #f4c95d; --c-actions: #a3c94a;
+    --c-books: #e0a87a; --c-quotes: #ec6e62; --c-chars: #d9b38c;
+    --fx-opacity: .35;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "thanksgiving",
+  title: "Gobble Charades",
+  deco: "🍂 🦃 🥧 🌽 🍂",
+  particles: ["🍂", "🍁"], particleMotion: "fall",
+  teams: ["🦃 Gobblers", "🥧 Pie Crew"],
+  modes: { easy: "🌽 Easy", hard: "🌶️ Hard" },
+  labels: { chars: "🦃 Character" },
+  words: {
+    songs: {
+      easy: [
+        "We Are Family", "Lean on Me", "Thank U, Next", "Be Our Guest", "Count on Me", "Take Me Home, Country Roads",
+        "Turkey in the Straw", "Over the River and Through the Wood", "Food, Glorious Food", "Home Sweet Home",
+        "Thank You for Being a Friend", "Shout", "You Are My Sunshine", "Happy Together"
+      ],
+      hard: [
+        "Alice's Restaurant", "Thankful", "Harvest Moon", "Thank God I'm a Country Boy", "Family Affair",
+        "Hungry Heart", "Thanks for the Memory", "Cheeseburger in Paradise", "Kind & Generous", "Autumn Leaves",
+        "September", "November Rain", "Home", "Hey, Good Lookin'"
+      ]
+    },
+    movies: {
+      easy: [
+        "A Charlie Brown Thanksgiving", "Free Birds", "Planes, Trains and Automobiles", "Pocahontas", "The Blind Side",
+        "Cloudy with a Chance of Meatballs", "Ratatouille", "The Waterboy", "Remember the Titans", "Chef",
+        "Addams Family Values", "Rudy", "Chicken Run", "Babe"
+      ],
+      hard: [
+        "Home for the Holidays", "Pieces of April", "The Ice Storm", "Scent of a Woman", "Dutch", "The Turkey Bowl",
+        "Julie & Julia", "Friday Night Lights", "The Longest Yard", "Hannah and Her Sisters", "Thanksgiving",
+        "Son in Law", "Big Night", "Soul Food", "Fantastic Mr. Fox", "Field of Dreams", "Friendsgiving"
+      ]
+    },
+    actions: {
+      easy: [
+        "Carving the turkey", "Gobbling like a turkey", "Saying grace", "Pulling the wishbone", "Passing the gravy",
+        "Mashing potatoes", "Eating too much", "Unbuttoning your pants", "Falling asleep on the couch",
+        "Watching football", "Throwing a football", "Tracing a hand turkey", "Raking leaves", "Pie-eating contest",
+        "Stuffing the turkey", "Rolling out pie dough", "Waving at the parade", "Black Friday shopping",
+        "Eating a drumstick", "Washing a mountain of dishes"
+      ],
+      hard: [
+        "Catching a runaway turkey", "Giant parade balloon floating", "Pardoning a turkey", "Sitting at the kids' table",
+        "Fighting over the last roll", "Burning the turkey", "Turkey fryer explosion", "Setting the table",
+        "Midnight leftover sandwich", "Making a toast", "Saying what you're thankful for", "Landing on Plymouth Rock",
+        "Shucking corn", "Picking apples", "Opening a can of cranberry sauce", "Thawing a frozen turkey",
+        "Flag football game", "Packing up leftovers", "Squeezing in at a crowded table", "Basting the turkey",
+        "Running a turkey trot", "Churning butter"
+      ]
+    },
+    books: {
+      easy: [
+        "Turkey Trouble", "Stone Soup", "The Little Red Hen", "There Was an Old Lady Who Swallowed a Pie",
+        "Llama Llama Gives Thanks", "Bear Says Thanks", "The Giving Tree", "Little House on the Prairie",
+        "Pete the Cat: The First Thanksgiving", "Clifford's Thanksgiving Visit", "The Night Before Thanksgiving",
+        "A Turkey for Thanksgiving"
+      ],
+      hard: [
+        "Balloons over Broadway", "Molly's Pilgrim", "Thank You, Sarah", "Farmer Boy", "The Grapes of Wrath",
+        "Mastering the Art of French Cooking", "Joy of Cooking", "Squanto's Journey", "Five Silly Turkeys",
+        "Gracias, the Thanksgiving Turkey", "Strega Nona", "Kitchen Confidential", "Like Water for Chocolate",
+        "The Omnivore's Dilemma", "Chicken Soup for the Soul"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Gobble gobble!", "Pass the gravy", "Happy Thanksgiving!", "Turkey time", "Talk turkey", "Cold turkey",
+        "Stuffed like a turkey", "Easy as pie", "Food coma", "Seconds, please!", "Leftovers!", "Touchdown!",
+        "Thanks a bunch", "Count your blessings", "Eat your vegetables", "Save room for dessert", "Give thanks",
+        "Who wants dark meat?"
+      ],
+      hard: [
+        "As American as apple pie", "A bird in the hand is worth two in the bush",
+        "Don't count your chickens before they hatch", "Too many cooks spoil the broth", "The proof is in the pudding",
+        "Cream of the crop", "Bring home the bacon", "Wearing my stretchy pants", "Hold the stuffing",
+        "Pass the cranberry sauce", "What are you thankful for?", "Cooking up a storm", "Breaking bread",
+        "Too stuffed to move", "You can't have your cake and eat it too", "Thankful, grateful, blessed",
+        "Gravy train", "Make a wish on the wishbone"
+      ]
+    },
+    chars: {
+      easy: [
+        "Turkey", "Pilgrim", "Farmer", "Scarecrow", "Football player", "Snoopy", "Charlie Brown", "Grandma",
+        "Grandpa", "Pumpkin pie", "Ear of corn", "Squirrel", "Deer", "Parade balloon", "Pie baker", "Drumstick",
+        "Sweet potato", "Hungry uncle"
+      ],
+      hard: [
+        "Woodstock", "Peppermint Patty", "Pardoned turkey", "Miles Standish", "Mayflower captain", "Cornucopia",
+        "Tom Turkey", "Gravy boat", "Turducken", "Wishbone", "Johnny Appleseed", "Cranberry", "Butterball",
+        "Marching band drummer", "Pie judge", "Sleepy dad after dinner"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#120a1f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Halloween Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎃</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  /* Every holiday page defines this same set of tokens. */
+  :root {
+    --font-display: "Creepster";
+    --bg: #120a1f; --bg2: #1e1033; --card: #24143d;
+    --ink: #f6eedd; --muted: #b9a8d6;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #0b0614;
+    --glow-top: #3b1a5c; --glow-bottom: #4a1d0a; --act-glow: #2d1450;
+    --title: #ff7a1a; --title-shadow: 0 0 18px rgba(255,122,26,.55), 0 3px 0 #5a1e00;
+    --accent: #ff7a1a; --accent-hi: #ff9a45; --accent-ink: #1a0b00; --accent-shadow: #8a3500;
+    --good: #7dff6b; --good-hi: #a8ff96; --good-ink: #062200; --good-shadow: #1e7a12;
+    --bad: #ff3b5c; --bad-hi: #ff6f86; --bad-ink: #2a0008; --bad-shadow: #85001a;
+    --c-songs: #ff7a1a; --c-movies: #b67cff; --c-actions: #7dff6b;
+    --c-books: #ffd23f; --c-quotes: #ff4d6d; --c-chars: #4dd6ff;
+    --fx-opacity: .22;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "halloween",
+  legacyKey: "charades:state",
+  title: "Spooky Charades",
+  deco: "🦇 🎃 👻 🕸️ 🦇",
+  particles: ["🦇", "👻"], particleMotion: "rise",
+  teams: ["👻 Ghouls", "🧟 Goblins"],
+  modes: { easy: "😊 Easy", hard: "💀 Hard" },
+  labels: { chars: "🧛 Character / Creature" },
+  words: {
+    songs: {
+      easy: [
+        "Thriller", "Ghostbusters", "Somebody's Watching Me", "Zombie", "I Put a Spell on You",
+        "Hungry Like the Wolf", "Heads Will Roll", "Abracadabra", "Running Up That Hill", "Monster",
+        "Spooky Scary Skeletons", "Calling All the Monsters", "Bark at the Moon", "The Addams Family Theme",
+        "I Want Candy", "Teeth"
+      ],
+      hard: [
+        "Monster Mash", "The Time Warp", "Disturbia", "Bad Moon Rising", "Werewolves of London", "Highway to Hell",
+        "Spooky", "Witchy Woman", "Season of the Witch", "This Is Halloween", "Don't Fear the Reaper",
+        "Dead Man's Party", "Psycho Killer", "Purple People Eater", "Enter Sandman", "Black Magic Woman",
+        "Ghost Town", "Love Potion No. 9", "Bloody Mary", "Sympathy for the Devil", "Bad Romance", "Toxic",
+        "Superstition", "The Devil Went Down to Georgia", "Hotel California", "Creep", "Bat Out of Hell",
+        "Dark Horse", "Haunted", "Smells Like Teen Spirit", "Witch Doctor", "Grim Grinning Ghosts",
+        "Ghost Riders in the Sky", "Dragula", "Witchcraft", "Bring Me to Life", "Sweet Dreams (Are Made of This)",
+        "Everybody (Backstreet's Back)", "Welcome to My Nightmare", "Black Widow", "Helena", "Feed My Frankenstein"
+      ]
+    },
+    movies: {
+      easy: [
+        "Halloween", "Hocus Pocus", "Beetlejuice", "Scream", "Jaws", "Get Out", "Coraline", "Casper",
+        "The Addams Family", "Edward Scissorhands", "A Quiet Place", "The Ring", "Zombieland", "Saw", "Alien",
+        "The Mummy", "The Witches", "Monster House", "Haunted Mansion", "The Birds", "Smile"
+      ],
+      hard: [
+        "The Nightmare Before Christmas", "The Exorcist", "The Shining", "It", "Psycho", "Hotel Transylvania",
+        "Corpse Bride", "Gremlins", "Friday the 13th", "A Nightmare on Elm Street", "Poltergeist", "Carrie",
+        "Shaun of the Dead", "Coco", "Monsters, Inc.", "Twilight", "The Conjuring", "Child's Play", "Halloweentown",
+        "Practical Magic", "Sleepy Hollow", "Us", "Frankenweenie", "ParaNorman", "The Lost Boys", "Van Helsing",
+        "The Others", "The Sixth Sense", "Signs", "The Blair Witch Project", "Nope", "Hereditary", "M3GAN",
+        "Five Nights at Freddy's", "It's the Great Pumpkin, Charlie Brown", "The Craft", "Arachnophobia", "Tremors",
+        "Night of the Living Dead", "Young Frankenstein", "Little Shop of Horrors", "The Rocky Horror Picture Show",
+        "Hubie Halloween", "The Babadook", "Insidious", "Final Destination", "I Know What You Did Last Summer",
+        "Freaky Friday", "Spirited Away"
+      ]
+    },
+    actions: {
+      easy: [
+        "Carving a pumpkin", "Trick-or-treating", "Bobbing for apples", "Riding a broomstick", "Zombie walk",
+        "Vampire biting a neck", "Stirring a cauldron", "Howling at the moon", "Rising from a coffin",
+        "Stuck in a spider web", "Running from a chainsaw", "Handing out candy", "Jump scare", "Casting a spell",
+        "Digging a grave", "Ringing a doorbell", "Jumping into a leaf pile", "Frankenstein walk",
+        "Bat flapping its wings", "Eating candy corn", "Hiding under the blankets", "Opening a creaky door",
+        "Floating ghost", "Skeleton dancing", "Witch cackling", "Wearing a bedsheet ghost costume", "Dodging bats",
+        "Turning into a bat", "Sweeping with a broom", "Running from a werewolf", "Putting in vampire teeth",
+        "Painting your face", "Lighting a candle", "Smashing a pumpkin", "Checking under the bed"
+      ],
+      hard: [
+        "Mummy unwrapping", "Sneaking extra candy", "Putting on a costume", "Walking through a haunted house",
+        "Candy stomachache", "TP-ing a house", "Telling a ghost story", "Black cat crossing your path",
+        "Using a Ouija board", "Reading a crystal ball", "Werewolf transformation", "Lost in a corn maze",
+        "Doing the Monster Mash", "Hayride", "Sharpening a stake", "Picking a pumpkin", "Making a scarecrow",
+        "Wrapping someone like a mummy", "Brewing a potion", "Sorting Halloween candy",
+        "Haunted house actor jumping out", "Hanging fake spider webs", "Ghost hunting with a flashlight",
+        "Breaking a mirror", "Roasting pumpkin seeds", "Playing a pipe organ", "Hiding during a scary movie",
+        "Tiptoeing through a graveyard", "Getting chased by a swarm of bats", "Trying to sleep after a scary movie"
+      ]
+    },
+    books: {
+      easy: [
+        "Frankenstein", "Dracula", "Harry Potter", "Goosebumps", "The Raven", "Room on the Broom",
+        "The Phantom of the Opera", "The Silence of the Lambs", "Jurassic Park", "Lord of the Flies",
+        "Charlotte's Web", "Alice in Wonderland", "The Hunchback of Notre Dame", "Hansel and Gretel",
+        "The Wizard of Oz", "Big Pumpkin", "Five Little Pumpkins"
+      ],
+      hard: [
+        "Pet Sematary", "The Legend of Sleepy Hollow", "The Tell-Tale Heart", "Where the Wild Things Are",
+        "The Haunting of Hill House", "Interview with the Vampire", "Dr. Jekyll and Mr. Hyde",
+        "The Picture of Dorian Gray", "The Graveyard Book", "Scary Stories to Tell in the Dark",
+        "Something Wicked This Way Comes", "Misery", "Cujo", "World War Z", "Rebecca", "Wicked", "Macbeth",
+        "Bunnicula", "Miss Peregrine's Home for Peculiar Children", "The Turn of the Screw", "The Monkey's Paw",
+        "A Series of Unfortunate Events", "The Hunger Games", "Salem's Lot", "The Hound of the Baskervilles",
+        "Night of the Living Dummy", "The Fall of the House of Usher", "Carmilla", "Rosemary's Baby", "Doctor Sleep",
+        "The Amityville Horror", "The Witch of Blackbird Pond", "Stellaluna",
+        "There Was an Old Lady Who Swallowed a Bat", "Mexican Gothic",
+        "The Little Old Lady Who Was Not Afraid of Anything", "Go Away, Big Green Monster!",
+        "The Cask of Amontillado"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Trick or treat!", "It's alive!", "Here's Johnny!", "I want to suck your blood", "Who you gonna call?",
+        "Beetlejuice, Beetlejuice, Beetlejuice!", "Boo!", "Smell my feet", "Go into the light", "Scared stiff",
+        "Rest in peace", "Creepy crawly", "Sweet tooth", "Don't go in there!", "Who's there?", "Dead tired",
+        "Scaredy-cat", "You look like you've seen a ghost"
+      ],
+      hard: [
+        "I see dead people", "They're here...", "Be afraid, be very afraid", "Double, double, toil and trouble",
+        "Do you like scary movies?", "We all float down here", "Nevermore", "It's just a bunch of hocus pocus",
+        "Skeleton in the closet", "Graveyard shift", "Bite the dust", "Over my dead body", "Dead man walking",
+        "Witching hour", "Things that go bump in the night", "Gives me the creeps", "I'll get you, my pretty!",
+        "Ding dong, the witch is dead", "You're gonna need a bigger boat", "Let's play a game", "Dead as a doornail",
+        "Cat got your tongue?", "Hair-raising", "Not a ghost of a chance", "Makes my blood run cold", "Wanna play?",
+        "Sweet dreams are made of screams", "Eat, drink and be scary", "Hold onto your broomsticks", "Fright night",
+        "Spooktacular", "Bone-chilling", "Give me something good to eat", "Skeleton crew", "Which witch is which?",
+        "Here comes the boogeyman", "Pumpkin spice and everything nice", "Have a fang-tastic night",
+        "I've got a bone to pick with you", "Eye of newt", "Heebie-jeebies", "Dead of night",
+        "Screaming bloody murder", "Gone batty", "No bones about it", "Hocus pocus, everybody focus!"
+      ]
+    },
+    chars: {
+      easy: [
+        "Vampire", "Frankenstein's Monster", "The Wolfman", "Mummy", "Witch", "Ghost", "Skeleton", "Freddy Krueger",
+        "Chucky", "Pennywise", "Ghostface", "Wednesday Addams", "Casper the Friendly Ghost", "Headless Horseman",
+        "Grim Reaper", "Mad Scientist", "Bigfoot", "Scarecrow", "Medusa", "Godzilla", "King Kong", "Hunchback",
+        "Werewolf", "Jack-o'-lantern", "Black cat", "Bat", "Spider", "Owl", "Troll", "Ogre", "Cyclops", "Yeti",
+        "Loch Ness Monster", "Wicked Witch of the West", "Mike Wazowski"
+      ],
+      hard: [
+        "Jack Skellington", "Michael Myers", "Jason Voorhees", "Sanderson Sisters", "Slimer",
+        "Stay Puft Marshmallow Man", "Hannibal Lecter", "Count Chocula", "Elvira", "Igor",
+        "Creature from the Black Lagoon", "Invisible Man", "Annabelle", "Slender Man", "Mothman", "Banshee",
+        "Gremlin", "Sally (Nightmare Before Christmas)", "Bride of Frankenstein", "Haunted doll", "Goblin",
+        "Morticia Addams", "Gomez Addams", "Uncle Fester", "Lurch", "Ichabod Crane", "Oogie Boogie", "Boogeyman",
+        "Sulley", "Ghoul"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>

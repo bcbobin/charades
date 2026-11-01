@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#07070f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>New Year's Charades</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥂</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Limelight&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/game.css">
+<style>
+  :root {
+    --font-display: "Limelight"; --title-spacing: 1px;
+    --title-size: clamp(20px, 6.6vw, 33px); --timesup-size: 46px;
+    --bg: #07070f; --bg2: #10101e; --card: #17172a;
+    --ink: #fffaf0; --muted: #a8a6c8;
+    --chip: #ffffff14; --line: #ffffff1a; --ghost-shadow: #020205;
+    --glow-top: #2a2050; --glow-bottom: #3a2a08; --act-glow: #1f1a3d;
+    --title: #f5c542; --title-shadow: 0 0 20px rgba(245,197,66,.55), 0 3px 0 #6b4f05;
+    --accent: #f5c542; --accent-hi: #ffe08a; --accent-ink: #1c1500; --accent-shadow: #8a6a10;
+    --good: #4de0c0; --good-hi: #84eed6; --good-ink: #00261e; --good-shadow: #12806a;
+    --bad: #ff4f8b; --bad-hi: #ff80ab; --bad-ink: #2e0012; --bad-shadow: #8f1446;
+    --c-songs: #f5c542; --c-movies: #c9a7ff; --c-actions: #4de0c0;
+    --c-books: #ffb36b; --c-quotes: #ff80ab; --c-chars: #8ecbff;
+    --fx-opacity: .5; --fx-color: #f5c542;
+  }
+</style>
+</head>
+<body>
+<script src="../shared/everyday.js"></script>
+<script>
+window.THEME = {
+  id: "new-years",
+  title: "Countdown Charades",
+  deco: "🎆 🥂 🕛 🎉 🎆",
+  particles: ["✦", "✧", "✨", "•"], particleMotion: "fall",
+  teams: ["🥂 Bubbly", "🎆 Sparklers"],
+  modes: { easy: "🥳 Easy", hard: "🔥 Hard" },
+  labels: { chars: "🎩 Character" },
+  words: {
+    songs: {
+      easy: [
+        "Auld Lang Syne", "Happy New Year", "Celebration", "I Gotta Feeling", "Party Rock Anthem", "Firework",
+        "Raise Your Glass", "Dynamite", "Tik Tok", "Get the Party Started", "Rock Around the Clock",
+        "Shut Up and Dance", "I Wanna Dance with Somebody", "Let's Get It Started", "Starships",
+        "The Final Countdown", "Dancing Queen"
+      ],
+      hard: [
+        "1999", "Countdown", "New Year's Day", "What Are You Doing New Year's Eve?", "Midnight City", "Closing Time",
+        "Time After Time", "Clocks", "(I've Had) The Time of My Life", "Start Me Up", "Disco Inferno",
+        "Don't Stop the Music", "Good Feeling", "Champagne Supernova", "Dancing in the Dark", "Turn Down for What",
+        "Wake Me Up", "Same Old Lang Syne"
+      ]
+    },
+    movies: {
+      easy: [
+        "When Harry Met Sally", "New Year's Eve", "The Hangover", "Yes Man", "13 Going on 30", "17 Again", "Click",
+        "Hot Tub Time Machine", "Bridget Jones's Diary", "The Great Gatsby", "Ocean's Eleven", "Back to the Future",
+        "Groundhog Day"
+      ],
+      hard: [
+        "Trading Places", "The Poseidon Adventure", "The Apartment", "About Time", "200 Cigarettes", "In Time",
+        "The Family Man", "Edge of Tomorrow", "Palm Springs", "Happy Death Day", "Before Sunrise", "La La Land",
+        "Moulin Rouge!", "Big", "Sleepless in Seattle"
+      ]
+    },
+    actions: {
+      easy: [
+        "Counting down from ten", "Popping champagne", "Blowing a party horn", "Throwing confetti", "Midnight kiss",
+        "Watching the ball drop", "Setting off fireworks", "Clinking glasses", "Making a resolution",
+        "Dancing at midnight", "Wearing party glasses", "Staying up late", "Yawning before midnight",
+        "Going to the gym", "Lighting a sparkler", "Pulling a party popper", "Hugging everyone at midnight",
+        "Taking a group selfie", "Starting a diet"
+      ],
+      hard: [
+        "Writing the wrong year", "Breaking your resolution", "Signing up for a gym", "Falling asleep before midnight",
+        "Polar bear plunge", "Eating 12 grapes at midnight", "Banging pots and pans", "Fireworks scaring the dog",
+        "Taking down the Christmas tree", "Throwing out junk food", "Singing Auld Lang Syne off-key",
+        "Spraying silly string", "Wearing a tiara", "Sweeping out bad luck", "Running around the block with a suitcase",
+        "Jumping off a chair at midnight", "Making a toast", "Squeezing through the Times Square crowd",
+        "Hunting for your coat after the party"
+      ]
+    },
+    books: {
+      easy: [
+        "Oh, the Places You'll Go!", "Atomic Habits", "The Time Machine", "A Wrinkle in Time", "Hickory Dickory Dock",
+        "Happy New Year, Spot!", "Around the World in Eighty Days", "Rip Van Winkle", "The Night Before New Year's",
+        "Cinderella"
+      ],
+      hard: [
+        "Squirrel's New Year's Resolution", "Shante Keys and the New Year's Peas", "P. Bear's New Year's Party",
+        "The 7 Habits of Highly Effective People", "The Power of Habit", "The Time Traveler's Wife", "Eat Pray Love",
+        "Who Moved My Cheese?", "The Life-Changing Magic of Tidying Up", "Mrs Dalloway", "The Midnight Library",
+        "Tuck Everlasting", "11/22/63"
+      ]
+    },
+    quotes: {
+      easy: [
+        "Here's to a great year!", "Ten, nine, eight...", "New year, new me", "Out with the old, in with the new", "Cheers!",
+        "Make a wish", "Ring in the new year", "Party like it's 1999", "Turn over a new leaf", "Fresh start",
+        "Pop the bubbly", "Let's get this party started", "Better late than never", "Here's to you!",
+        "Bottoms up!", "Starting tomorrow!", "Go big or go home"
+      ],
+      hard: [
+        "Should old acquaintance be forgot", "Clean slate", "Start the year off right", "Raise the roof",
+        "Paint the town red", "Till the clock strikes twelve", "Party animal", "Life of the party", "Ring out the old",
+        "Same time next year", "New year, same me", "This is my year", "One for the books", "Seize the day",
+        "Time waits for no one", "Saved by the bell", "Glass half full", "Year in review"
+      ]
+    },
+    chars: {
+      easy: [
+        "Baby New Year", "Father Time", "DJ", "Champagne bottle", "Disco ball", "Grandfather clock", "Cuckoo clock",
+        "Personal trainer", "Party crasher", "Marty McFly", "White Rabbit", "Bartender", "Pop star", "Big Ben",
+        "Confetti cannon", "Cinderella at midnight"
+      ],
+      hard: [
+        "Ryan Seacrest", "Dick Clark", "Jay Gatsby", "Doc Brown", "Janus", "Phil Connors", "Times Square ball",
+        "Bouncer", "Gym rat", "Fortune teller", "Zoltar", "Time traveler", "Toddler who won't sleep",
+        "Fireworks technician"
+      ]
+    }
+  }
+};
+</script>
+<script src="../shared/game.js"></script>
+</body>
+</html>
