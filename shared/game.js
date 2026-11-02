@@ -13,6 +13,10 @@ const RECENT_SHARE = 0.7;
 const THEMED_SHARE = 0.75;
 const THEMED_FULL = 12;
 const MODES = ["easy", "hard"];
+// Suggestions are added as rows to a private Google Sheet by the web app in
+// tools/suggestions.gs (setup steps are in the README). Until its /exec URL is pasted
+// here, the form says suggestions aren't switched on.
+const SUGGEST_URL = "https://script.google.com/macros/s/AKfycbwaO7r5wbbrXxT5hfYIBlQeavtnBCBSTzp1FATUCMQBJOlND4HpFuZW_RxFlM-KyPha2g/exec";
 const CATS = [
   { id: "songs", label: "🎵 Song" },
   { id: "movies", label: "🎬 Movie" },
@@ -37,6 +41,9 @@ for (const cat of CATEGORIES) for (const m of MODES)
   cat.pools[m] = { themed: claim(((T.words[cat.id] || {})[m]) || [], `${T.id}.${cat.id}.${m}`) };
 for (const cat of CATEGORIES) for (const m of MODES)
   cat.pools[m].everyday = claim(((window.EVERYDAY[cat.id] || {})[m]) || []);
+// Words added from player suggestions: { "Exact word": "name to credit" }, on the holiday's
+// THEME.credits or EVERYDAY.credits.
+const CREDITS = { ...(window.EVERYDAY.credits || {}), ...(T.credits || {}) };
 const hasWord = (cat, word) => {
   const p = cat.pools[state.mode];
   return p.themed.includes(word) || p.everyday.includes(word);
@@ -119,6 +126,7 @@ document.body.insertAdjacentHTML("afterbegin", `
       <button id="switchBtn">Switch team</button>
       <button id="resetBtn">Reset scores</button>
       <button id="gearBtn">⚙️ Settings</button>
+      <button id="suggestBtn">💡 Suggest a word</button>
     </div>
   </div>
 </div>
@@ -128,6 +136,7 @@ document.body.insertAdjacentHTML("afterbegin", `
     <div>
       <div class="cat-big" id="actCat"></div>
       <div class="word-big" id="actWord"></div>
+      <div class="credit-big" id="actCredit"></div>
       <div class="hint" id="actHint"></div>
     </div>
 
@@ -174,6 +183,29 @@ document.body.insertAdjacentHTML("afterbegin", `
     </div>
     <button class="btn" id="settingsDone">Done</button>
   </div>
+</div>
+
+<div class="sheet-bg" id="suggest">
+  <form class="sheet" id="suggestForm" novalidate>
+    <h2>Suggest a Word</h2>
+    <p class="sheet-note" id="suggestFor"></p>
+    <label for="sgWord">Word or phrase</label>
+    <input class="field" id="sgWord" maxlength="80" autocomplete="off" autocapitalize="sentences" enterkeyhint="next">
+    <label>Category</label>
+    <div class="choices cats" id="sgCats"></div>
+    <label>Difficulty</label>
+    <div class="choices two" id="sgModes"></div>
+    <label for="sgName">Name to credit <span class="opt-tag">optional · shown on the card</span></label>
+    <input class="field" id="sgName" maxlength="24" autocomplete="nickname" autocapitalize="words" enterkeyhint="next">
+    <label for="sgEmail">Email <span class="opt-tag">optional · to hear when it's added</span></label>
+    <input class="field" id="sgEmail" type="email" maxlength="120" autocomplete="email" enterkeyhint="send">
+    <input type="checkbox" id="sgBot" class="hidden" tabindex="-1" autocomplete="off">
+    <p class="sheet-msg" id="suggestMsg" role="status"></p>
+    <div class="row">
+      <button type="button" class="btn ghost" id="suggestCancel">Cancel</button>
+      <button type="submit" class="btn" id="suggestSend">Send</button>
+    </div>
+  </form>
 </div>`);
 
 const $ = id => document.getElementById(id);
@@ -238,6 +270,12 @@ function showHand() {
     b.innerHTML = `<span class="cat"></span><span class="word"></span>`;
     b.querySelector(".cat").textContent = cat.label;
     b.querySelector(".word").textContent = word;
+    if (CREDITS[word]) {
+      const by = document.createElement("span");
+      by.className = "credit";
+      by.textContent = "💡 " + CREDITS[word];
+      b.appendChild(by);
+    }
     b.onclick = () => openAct(cat, word);
     grid.appendChild(b);
   });
@@ -276,6 +314,7 @@ function openAct(cat, word) {
   $("actCat").textContent = cat.label;
   $("actCat").style.color = cat.color;
   $("actWord").textContent = word;
+  $("actCredit").textContent = CREDITS[word] ? "💡 Suggested by " + CREDITS[word] : "";
   $("actHint").textContent = "Read it, hide the phone, then tap start!";
   act.classList.remove("over");
   act.classList.add("show");
@@ -439,6 +478,64 @@ $("timePlus").onclick = () => setSeconds(state.seconds + 5);
 $("gearBtn").onclick = () => openSettings();
 $("settingsDone").onclick = closeSettings;
 settings.onclick = e => { if (e.target === settings) closeSettings(); };
+
+// ---------- suggest a word ----------
+const suggest = $("suggest"), sgForm = $("suggestForm"), sgMsg = $("suggestMsg");
+const sg = { cat: null, mode: null };
+$("suggestFor").textContent = `It goes to ${T.title}. We read every one!`;
+for (const c of CATEGORIES) $("sgCats").appendChild(Object.assign(document.createElement("button"), { type: "button", textContent: c.label })).dataset.c = c.id;
+for (const b of modeBtns) $("sgModes").appendChild(Object.assign(document.createElement("button"), { type: "button", textContent: b.textContent })).dataset.m = b.dataset.mode;
+function renderSuggest() {
+  $("sgCats").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.c === sg.cat));
+  $("sgModes").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.m === sg.mode));
+}
+const sayMsg = (text, kind = "") => { sgMsg.textContent = text; sgMsg.className = "sheet-msg " + kind; };
+$("sgCats").onclick = e => { const b = e.target.closest("button"); if (b) { sg.cat = b.dataset.c; renderSuggest(); } };
+$("sgModes").onclick = e => { const b = e.target.closest("button"); if (b) { sg.mode = b.dataset.m; renderSuggest(); } };
+function openSuggest() {
+  sg.mode = sg.mode || state.mode;
+  // Name and email are remembered across holidays, so a regular only types them once.
+  try {
+    const me = JSON.parse(localStorage.getItem("charades:suggester") || "{}");
+    if (!$("sgName").value) $("sgName").value = me.name || "";
+    if (!$("sgEmail").value) $("sgEmail").value = me.email || "";
+  } catch {}
+  sayMsg("");
+  renderSuggest();
+  suggest.classList.add("show");
+}
+const closeSuggest = () => { document.activeElement?.blur(); suggest.classList.remove("show"); };
+sgForm.onsubmit = async e => {
+  e.preventDefault();
+  const word = $("sgWord").value.trim(), name = $("sgName").value.trim(), email = $("sgEmail").value.trim();
+  if (!word) { sayMsg("Type a word or phrase first.", "bad"); return $("sgWord").focus(); }
+  if (!sg.cat) return sayMsg("Pick a category.", "bad");
+  if (email && !$("sgEmail").checkValidity()) { sayMsg("That email doesn't look right.", "bad"); return $("sgEmail").focus(); }
+  if (!SUGGEST_URL) return sayMsg("Suggestions aren't switched on yet. Check back soon!", "bad");
+  try { localStorage.setItem("charades:suggester", JSON.stringify({ name, email })); } catch {}
+  $("suggestSend").disabled = true;
+  sayMsg("Sending…");
+  try {
+    // A plain-text body keeps this a "simple" request, so Apps Script needs no CORS preflight.
+    const res = await fetch(SUGGEST_URL, {
+      method: "POST",
+      body: JSON.stringify({ game: T.id, category: sg.cat, difficulty: sg.mode, word, name, email, bot: $("sgBot").checked })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.ok) throw new Error(data.error || res.status);
+    $("sgWord").value = "";
+    sg.cat = null;
+    renderSuggest();
+    sayMsg(email ? "Thanks! We'll email you if it's added." : "Thanks! Your suggestion was sent.", "good");
+  } catch {
+    sayMsg("Couldn't send it. Check your connection and try again.", "bad");
+  } finally {
+    $("suggestSend").disabled = false;
+  }
+};
+$("suggestBtn").onclick = openSuggest;
+$("suggestCancel").onclick = closeSuggest;
+suggest.onclick = e => { if (e.target === suggest) closeSuggest(); };
 
 renderScores();
 renderMode();

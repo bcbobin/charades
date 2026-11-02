@@ -100,6 +100,13 @@ h1 {
 .opt:active { transform: translateY(3px) scale(.98); }
 .opt .cat { font-size: 12px; font-weight: 900; letter-spacing: .6px; text-transform: uppercase; color: var(--c); }
 .opt .word { font-size: 24px; font-weight: 900; line-height: 1.15; overflow-wrap: anywhere; }
+.opt { position: relative; }
+.opt:has(.credit) { padding-bottom: 26px; }
+.opt .credit {
+  position: absolute; right: 12px; bottom: 8px; max-width: 60%;
+  font-size: 11px; font-weight: 800; color: var(--muted); opacity: .85;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: none; } }
 
 .btn {
@@ -129,6 +136,7 @@ h1 {
   text-align: center; font-weight: 900; font-size: clamp(32px, 10vw, 48px); line-height: 1.1;
   margin: 6px 0; overflow-wrap: anywhere;
 }
+.act .credit-big { text-align: center; color: var(--muted); font-weight: 800; font-size: 13px; min-height: 1em; }
 .timer { position: relative; width: min(62vw, 250px); aspect-ratio: 1; margin: 0 auto; }
 .timer svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .timer .track { stroke: var(--chip); }
@@ -192,3 +200,19 @@ h1 {
 .stepper { display: grid; grid-template-columns: 56px 1fr 56px; gap: 8px; align-items: center; margin-bottom: 16px; }
 .stepper button { height: 48px; border-radius: 14px; border: 0; background: var(--card); color: var(--ink); font: inherit; font-weight: 900; font-size: 24px; }
 .stepper output { text-align: center; font-weight: 900; font-size: 26px; }
+
+/* Suggest a word */
+.sheet-note { text-align: center; color: var(--muted); font-weight: 700; font-size: 14px; margin: -6px 0 14px; }
+.sheet .field {
+  display: block; width: 100%; padding: 12px; margin-bottom: 14px; border-radius: 14px; border: 2px solid var(--line);
+  background: var(--card); color: var(--ink); font: inherit; font-weight: 800; font-size: 16px;
+  user-select: text; -webkit-user-select: text;
+}
+.sheet .field:focus { outline: none; border-color: var(--accent); }
+.opt-tag { font-weight: 700; font-size: 12px; opacity: .75; }
+.choices.cats, .choices.two { grid-template-columns: 1fr 1fr; }
+.choices.cats button { font-size: 15px; padding: 12px 6px; }
+.sheet-msg { text-align: center; font-weight: 800; font-size: 14px; min-height: 1.3em; margin: 0 0 10px; color: var(--muted); }
+.sheet-msg.good { color: var(--good); }
+.sheet-msg.bad { color: var(--bad); }
+.btn:disabled { opacity: .6; }
