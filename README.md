@@ -21,7 +21,8 @@ URL and theme on top of the same layout and game engine.
 - `shared/game.js` — the whole game (layout, dealing, timer, scores, settings). It reads
   `window.THEME` from the holiday page.
 - `shared/game.css` — the shared layout, styled only through CSS variables.
-- `shared/everyday.js` — non-holiday words mixed into every holiday (about 40% of cards).
+- `shared/everyday.js` — non-holiday words mixed into every holiday (about 25% of cards; more for a
+  holiday category with fewer than 12 words).
 - `<holiday>/index.html` — the holiday's colors and fonts (`:root` variables), its preset
   team names, and its own word lists split into `easy` and `hard`.
 

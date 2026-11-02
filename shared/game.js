@@ -8,7 +8,10 @@ const OPTIONS_PER_DEAL = 3;
 // pool's deals, so a word can't come back until most of its pool has been seen.
 const RECENT_SHARE = 0.7;
 // Chance a card comes from the holiday's own words instead of the shared everyday ones.
-const THEMED_SHARE = 0.6;
+// A holiday list shorter than THEMED_FULL gets a proportionally smaller share, so a
+// handful of words doesn't repeat on every other card.
+const THEMED_SHARE = 0.75;
+const THEMED_FULL = 12;
 const MODES = ["easy", "hard"];
 const CATS = [
   { id: "songs", label: "🎵 Song" },
@@ -68,7 +71,8 @@ const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
 function draw(cat) {
   const p = cat.pools[state.mode];
-  const useThemed = p.themed.length && (Math.random() < THEMED_SHARE || !p.everyday.length);
+  const share = THEMED_SHARE * Math.min(1, p.themed.length / THEMED_FULL);
+  const useThemed = p.themed.length && (Math.random() < share || !p.everyday.length);
   const src = useThemed ? "themed" : "everyday";
   const words = p[src];
   const k = `${cat.id}:${state.mode}:${src}`;
