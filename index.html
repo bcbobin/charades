@@ -68,7 +68,14 @@
   .card.featured .when { font-size: 15px; }
   @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .card { animation: none; } }
-  footer { text-align: center; color: var(--muted); font-size: 13px; font-weight: 700; margin-top: 22px; line-height: 1.5; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; font-weight: 700; margin-top: 22px; line-height: 1.5; display: grid; gap: 14px; justify-items: center; }
+  .kofi {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px;
+    background: #ff5e5b; color: #fff; text-decoration: none; font-size: 15px; font-weight: 900;
+    box-shadow: 0 3px 0 #b8322f; transition: transform .08s;
+  }
+  .kofi:active { transform: translateY(2px); box-shadow: 0 1px 0 #b8322f; }
+  .kofi:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 </style>
 </head>
 <body>
@@ -79,7 +86,10 @@
     <p class="sub">Pick a holiday. Two teams, one phone.</p>
   </header>
   <nav class="grid" id="grid" aria-label="Holidays"></nav>
-  <footer>Tip: add a holiday to your home screen to play full-screen.</footer>
+  <footer>
+    <span>Tip: add a holiday to your home screen to play full-screen.</span>
+    <a class="kofi" href="https://ko-fi.com/bcbobin" target="_blank" rel="noopener">☕ Support me on Ko-fi</a>
+  </footer>
 </div>
 <script>
 // Each holiday's colors mirror the tokens on its own page.
