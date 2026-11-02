@@ -65,6 +65,18 @@ The name then appears in the card's bottom corner and on the acting screen. Word
 2. Change the `:root` colors/font, the Google Fonts link, and `window.THEME` (`id` must be
    unique; it keys the saved scores).
 3. Add an entry to `HOLIDAYS` in the root `index.html` with its date and card colors.
+4. Run `node tools/build_seo.js --images`.
+
+### Search engines
+
+`node tools/build_seo.js` writes everything search engines read, from the word lists and `HOLIDAYS`:
+each page's title, description, canonical link, social preview tags and structured data; a word-list
+page per holiday at `/<holiday>/ideas/` (styled by `shared/ideas.css`); the homepage's plain links
+and how-to text; and `sitemap.xml`. In the game pages and homepage it only rewrites the text between
+its `<!-- …:start -->` / `<!-- …:end -->` markers; the `ideas/` pages are fully generated, so don't edit them by hand.
+**Re-run it after changing words or adding a holiday** (step 4 below). Add `--images` to also redraw
+the 1200×630 `og.png` share images (needs Edge or Chrome). If the site moves to its own domain,
+change `SITE` at the top of the script and re-run.
 
 ## Run locally
 

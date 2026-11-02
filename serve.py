@@ -29,7 +29,14 @@ def addresses():
     return sorted(ips)
 
 
-handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT))
+class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    # Phones otherwise keep showing old pages after an edit.
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store")
+        super().end_headers()
+
+
+handler = functools.partial(NoCacheHandler, directory=str(ROOT))
 server = http.server.ThreadingHTTPServer(("0.0.0.0", PORT), handler)
 
 print("Holiday Charades is running. Open on a phone:")
