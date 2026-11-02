@@ -21,6 +21,7 @@ URL and theme on top of the same layout and game engine.
 - `shared/game.js` — the whole game (layout, dealing, timer, scores, settings). It reads
   `window.THEME` from the holiday page.
 - `shared/game.css` — the shared layout, styled only through CSS variables.
+- `shared/kofi.js` — the ☕ Ko-fi tip panel (links with `data-kofi` open it in a sheet).
 - `shared/everyday.js` — non-holiday words mixed into every holiday (about 25% of cards; more for a
   holiday category with fewer than 12 words).
 - `<holiday>/index.html` — the holiday's colors and fonts (`:root` variables), its preset

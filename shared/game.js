@@ -92,6 +92,7 @@ document.body.insertAdjacentHTML("afterbegin", `
   <div class="deco-row">
     <a class="home-link" href="../" aria-label="All holidays">🏠</a>
     <div class="deco" id="deco"></div>
+    <a class="home-link" href="https://ko-fi.com/bcbobin" target="_blank" rel="noopener" data-kofi aria-label="Support on Ko-fi">☕</a>
   </div>
 
   <div class="scores">
@@ -442,4 +443,5 @@ settings.onclick = e => { if (e.target === settings) closeSettings(); };
 renderScores();
 renderMode();
 showHand();
+document.head.appendChild(Object.assign(document.createElement("script"), { src: "../shared/kofi.js" }));
 })();
