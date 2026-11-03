@@ -76,7 +76,7 @@ and how-to text; and `sitemap.xml`. In the game pages and homepage it only rewri
 its `<!-- …:start -->` / `<!-- …:end -->` markers; the `ideas/` pages are fully generated, so don't edit them by hand.
 **Re-run it after changing words or adding a holiday** (step 4 below). Add `--images` to also redraw
 the 1200×630 `og.png` share images (needs Edge or Chrome). If the site moves to its own domain,
-change `SITE` at the top of the script and re-run.
+change `SITE` at the top of the script and the `CNAME` file together, then re-run.
 
 ## Run locally
 
@@ -96,3 +96,10 @@ The site is plain static files with relative links, so it works at
    branch `main`, folder `/ (root)`.
 3. After a minute the homepage is live at `https://<user>.github.io/<repo>/` and each
    holiday at `https://<user>.github.io/<repo>/christmas/` and so on.
+
+### Custom domain
+
+The site is served at **https://charadesnight.com** (the `CNAME` file tells GitHub Pages). DNS at the
+registrar: four `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+`185.199.111.153`, and a `CNAME` for `www` → `bcbobin.github.io`. Old `bcbobin.github.io/charades/`
+links redirect automatically.

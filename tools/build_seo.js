@@ -12,7 +12,7 @@ const vm = require("vm");
 const os = require("os");
 const { execFileSync } = require("child_process");
 
-const SITE = "https://bcbobin.github.io/charades/"; // change if the site moves to its own domain
+const SITE = "https://charadesnight.com/"; // must match the CNAME file
 const ROOT = path.resolve(__dirname, "..");
 const read = f => fs.readFileSync(path.join(ROOT, f), "utf8");
 const write = (f, s) => fs.writeFileSync(path.join(ROOT, f), s);
@@ -204,6 +204,13 @@ ${[SITE, ...HOLIDAYS.flatMap(h => [h.url, h.url + "ideas/"])].map(u => `  <url><
 </urlset>
 `);
 
+// robots.txt only counts at a domain root, which the custom domain gives us.
+write("robots.txt", `User-agent: *
+Allow: /
+
+Sitemap: ${SITE}sitemap.xml
+`);
+
 // ---------- social preview images (1200×630) ----------
 if (process.argv.includes("--images")) {
   const browser = [
@@ -236,4 +243,4 @@ if (process.argv.includes("--images")) {
     bg: "#0d0b14", card: "#2a1747", ink: "#f7f4ff", muted: "#a7a1bd", title: "#ff9a45", accent: "#ff4d8d" }, "og.png");
   fs.rmSync(tmp, { recursive: true, force: true });
 }
-console.log(`Updated ${HOLIDAYS.length} holiday pages, index.html and sitemap.xml${process.argv.includes("--images") ? " and og.png images" : ""}.`);
+console.log(`Updated ${HOLIDAYS.length} holiday pages, index.html, sitemap.xml and robots.txt${process.argv.includes("--images") ? " and og.png images" : ""}.`);
