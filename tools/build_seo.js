@@ -64,10 +64,15 @@ ${JSON.stringify(jsonld, null, 2)}
 </script>
 <!-- seo:end -->`;
 }
+const AUTHOR = {
+  "@type": "Person", name: "Bogdan Bobin", url: "https://bogdanbobin.com/",
+  sameAs: ["https://github.com/bcbobin", "https://ko-fi.com/bcbobin"]
+};
 const app = (name, url, description) => ({
   "@type": "WebApplication", name, url, description,
   applicationCategory: "GameApplication", operatingSystem: "Any (web browser)", isAccessibleForFree: true,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  author: AUTHOR
 });
 const howToHtml = `<ol>${HOW_TO.map(s => `<li>${esc(s)}</li>`).join("")}</ol>`;
 
