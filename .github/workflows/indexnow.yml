@@ -1,0 +1,33 @@
+# Tells Bing (and the other IndexNow engines: Yandex, Seznam, Naver; DuckDuckGo, Yahoo and ChatGPT
+# search use Bing's index) that the site changed, so they recrawl within hours. Google doesn't use
+# IndexNow; it reads sitemap.xml on its own. The key file at the site root proves we own the domain.
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths: ["**.html", "sitemap.xml"]
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Submit sitemap URLs
+        run: |
+          host=$(cat CNAME | tr -d '[:space:]')
+          key=$(basename "$(ls ./*.txt | grep -E '/[0-9a-f]{32}\.txt$')" .txt)
+          # GitHub Pages deploys in parallel with this job; wait until the new sitemap is live.
+          for i in $(seq 1 30); do
+            curl -sf "https://$host/sitemap.xml?nc=$RANDOM" | cmp -s - sitemap.xml && break
+            sleep 10
+          done
+          urls=$(grep -o '<loc>[^<]*</loc>' sitemap.xml | sed 's/<[^>]*>//g' | jq -R . | jq -sc .)
+          body=$(jq -nc --arg host "$host" --arg key "$key" --argjson urls "$urls" \
+            '{host: $host, key: $key, keyLocation: "https://\($host)/\($key).txt", urlList: $urls}')
+          code=$(curl -s -o response.txt -w '%{http_code}' -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' -d "$body")
+          echo "IndexNow answered $code for $(echo "$urls" | jq length) URLs"; cat response.txt
+          # 200 = accepted, 202 = accepted while the key is still being checked
+          [ "$code" = 200 ] || [ "$code" = 202 ]

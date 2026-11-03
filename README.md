@@ -103,3 +103,14 @@ The site is served at **https://charadesnight.com** (the `CNAME` file tells GitH
 registrar: four `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
 `185.199.111.153`, and a `CNAME` for `www` → `bcbobin.github.io`. Old `bcbobin.github.io/charades/`
 links redirect automatically.
+
+### Search engine pings
+
+- **Google** reads `sitemap.xml` by itself every few days; `node tools/build_seo.js` refreshes its
+  `lastmod` dates. For an urgent page (e.g. before a holiday), use **URL Inspection → Request
+  indexing** in Search Console; Google offers no API for that.
+- **Bing and other IndexNow engines** (Yandex, Seznam, Naver; DuckDuckGo, Yahoo and ChatGPT search
+  use Bing's index) are pinged automatically by `.github/workflows/indexnow.yml` on every push to
+  `main` that changes a page or the sitemap. It can also be run by hand from the repo's **Actions** tab.
+  The 32-character `.txt` file at the root is the IndexNow key that proves we own the domain; don't
+  delete or rename it.
