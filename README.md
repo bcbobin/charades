@@ -97,13 +97,14 @@ never dealt, and words that don't fit on screen. Code: `test/autoplay/`. Needs N
 ```bash
 npm install && npx playwright install chromium
 npm run autoplay                                   # 500 Thanksgiving games
-npm run autoplay -- --games 5000 --holiday all      # every holiday
+npm run autoplay -- --each 50 --holiday all         # 50 games on every holiday
 npm run autoplay -- --replay 1234                   # watch one failing seed, step by step
 ```
 
 The same seed always plays the same game, taps and cards alike. The app (bcbobin/charades-app)
 runs these same bots on its build and checks it plays identically to this site; the Autoplay
-workflow runs both on every push (2000 games across all holidays nightly), then has the app
+workflow runs both on every push and manual run (50 games per holiday; 2000 across all holidays
+nightly), then has the app
 repo open a PR that moves its copy of the game to this commit.
 
 ## Deploy to GitHub Pages

@@ -7,7 +7,8 @@
 //   node test/autoplay/run.mjs --base ../charades-app/www       the app build
 //   node test/autoplay/run.mjs --replay 1234                    one game, in a visible browser, step by step
 //
-// Options: --base <dir|url> --holiday <id|all> --games N --seed N --turns N --workers N
+// Options: --base <dir|url> --holiday <id|all> --games N --each N --seed N --turns N --workers N
+// --each N plays N games per holiday and overrides --games.
 //          --viewport WxH --out report.json --trace traces.jsonl --replay SEED
 import { chromium } from "playwright";
 import { createServer } from "node:http";
@@ -66,6 +67,7 @@ const server = dir ? await serve(dir) : null;
 const base = (server?.url || opt.base).replace(/\/$/, "");
 const holidays = opt.holiday === "all" ? (dir ? await holidaysIn(dir) : (() => { throw new Error("--holiday all needs a folder --base"); })())
   : opt.holiday.split(",");
+if (args.each && replay === null) opt.games = Number(args.each) * holidays.length;
 
 const started = performance.now();
 const browser = await chromium.launch({ headless: replay === null, slowMo: replay !== null ? 150 : 0 });

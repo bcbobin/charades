@@ -1,4 +1,6 @@
-# Bots play hundreds of seeded games (thousands nightly) and check the game after every tap.
+# Bots play seeded games and check the game after every tap: 50 per holiday on each push and
+# manual run, 2000 across all holidays nightly. This repo is public, so these minutes are free;
+# the private app repo runs none of this in its own CI.
 # Then the same bots play the app build (bcbobin/charades-app) made from this commit, and must
 # play it identically, so a web change can't silently break the app. On main, the app repo is
 # told to open a PR that moves its web/ submodule here.
@@ -10,22 +12,21 @@ name: Autoplay
 on:
   push:
     branches: [main]
-  pull_request:
   schedule:
     - cron: "17 7 * * *"
   workflow_dispatch:
     inputs:
-      games:
-        description: Games to play
-        default: "2000"
+      each:
+        description: Games per holiday
+        default: "50"
 
 concurrency:
   group: autoplay-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  GAMES: ${{ inputs.games || (github.event_name == 'schedule' && '2000') || '300' }}
-  HOLIDAY: ${{ github.event_name == 'schedule' && 'all' || 'thanksgiving' }}
+  # Nightly: 2000 games in all. Push and manual: N per holiday.
+  SIZE: ${{ github.event_name == 'schedule' && '--games 2000' || format('--each {0}', inputs.each || '50') }}
 
 jobs:
   web:
@@ -39,7 +40,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm run autoplay -- --games $GAMES --holiday $HOLIDAY --out autoplay-report.json
+      - run: npm run autoplay -- $SIZE --holiday all --out autoplay-report.json
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -49,7 +50,7 @@ jobs:
 
   app:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     env:
       TOKEN: ${{ secrets.APP_REPO_TOKEN }}
     steps:
@@ -76,7 +77,7 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
           npm test
-          node scripts/diff-play.mjs --games 200 --holiday $HOLIDAY
+          node scripts/diff-play.mjs $SIZE --holiday all
 
   tell-app:
     needs: [web, app]
