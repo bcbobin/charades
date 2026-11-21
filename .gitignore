@@ -1,1 +1,4 @@
 .claude/
+node_modules/
+autoplay-report.json
+autoplay-traces.jsonl

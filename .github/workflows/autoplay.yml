@@ -1,0 +1,92 @@
+# Bots play hundreds of seeded games (thousands nightly) and check the game after every tap.
+# Then the same bots play the app build (bcbobin/charades-app) made from this commit, and must
+# play it identically, so a web change can't silently break the app. On main, the app repo is
+# told to open a PR that moves its web/ submodule here.
+#
+# Needs secret APP_REPO_TOKEN: a fine-grained token with Contents read/write on charades-app only
+# (it's private). Without it the app jobs are skipped and only the website is played.
+name: Autoplay
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 7 * * *"
+  workflow_dispatch:
+    inputs:
+      games:
+        description: Games to play
+        default: "2000"
+
+concurrency:
+  group: autoplay-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GAMES: ${{ inputs.games || (github.event_name == 'schedule' && '2000') || '300' }}
+  HOLIDAY: ${{ github.event_name == 'schedule' && 'all' || 'thanksgiving' }}
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run autoplay -- --games $GAMES --holiday $HOLIDAY --out autoplay-report.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: autoplay-report-web
+          path: autoplay-report.json
+          retention-days: 14
+
+  app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TOKEN: ${{ secrets.APP_REPO_TOKEN }}
+    steps:
+      - if: env.TOKEN == ''
+        run: echo "::notice::APP_REPO_TOKEN not set, skipping the app check"
+      - if: env.TOKEN != ''
+        uses: actions/checkout@v4
+        with:
+          repository: bcbobin/charades-app
+          token: ${{ secrets.APP_REPO_TOKEN }}
+          path: app
+      # This commit stands in for the app's web/ submodule.
+      - if: env.TOKEN != ''
+        uses: actions/checkout@v4
+        with:
+          path: app/web
+      - if: env.TOKEN != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - if: env.TOKEN != ''
+        working-directory: app
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm test
+          node scripts/diff-play.mjs --games 200 --holiday $HOLIDAY
+
+  tell-app:
+    needs: [web, app]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      TOKEN: ${{ secrets.APP_REPO_TOKEN }}
+    steps:
+      - if: env.TOKEN != ''
+        run: |
+          curl -fsS -X POST -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/bcbobin/charades-app/dispatches \
+            -d "{\"event_type\":\"web-updated\",\"client_payload\":{\"sha\":\"$GITHUB_SHA\"}}"

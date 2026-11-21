@@ -1,0 +1,13 @@
+{
+  "name": "charades",
+  "private": true,
+  "description": "Test tooling only. The site itself is plain HTML/JS and needs no build.",
+  "type": "module",
+  "scripts": {
+    "autoplay": "node test/autoplay/run.mjs",
+    "autoplay:all": "node test/autoplay/run.mjs --holiday all --games 2000"
+  },
+  "devDependencies": {
+    "playwright": "1.65.0"
+  }
+}

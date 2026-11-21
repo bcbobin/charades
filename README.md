@@ -86,6 +86,26 @@ python serve.py
 
 It prints LAN/Tailscale URLs to open on phones.
 
+## Autoplay (bots playtest the game)
+
+Bots play thousands of seeded games in headless Chromium at phone size and check the game after
+every tap: scores and turns, saved state across reloads, the timer (pause, time-up), that every
+card is a real word from its category and difficulty, and that words don't come back too soon.
+The report also shows how often holiday words come up against the intended share, holiday words
+never dealt, and words that don't fit on screen. Code: `test/autoplay/`. Needs Node 22+.
+
+```bash
+npm install && npx playwright install chromium
+npm run autoplay                                   # 500 Thanksgiving games
+npm run autoplay -- --games 5000 --holiday all      # every holiday
+npm run autoplay -- --replay 1234                   # watch one failing seed, step by step
+```
+
+The same seed always plays the same game, taps and cards alike. The app (bcbobin/charades-app)
+runs these same bots on its build and checks it plays identically to this site; the Autoplay
+workflow runs both on every push (2000 games across all holidays nightly), then has the app
+repo open a PR that moves its copy of the game to this commit.
+
 ## Deploy to GitHub Pages
 
 The site is plain static files with relative links, so it works at
