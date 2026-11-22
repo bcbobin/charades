@@ -71,8 +71,9 @@ The name then appears in the card's bottom corner and on the acting screen. Word
 
 `node tools/build_seo.js` writes everything search engines read, from the word lists and `HOLIDAYS`:
 each page's title, description, canonical link, social preview tags and structured data; a word-list
-page per holiday at `/<holiday>/ideas/` (styled by `shared/ideas.css`); the homepage's plain links
-and how-to text; and `sitemap.xml`. In the game pages and homepage it only rewrites the text between
+page per holiday at `/<holiday>/ideas/` (styled by `shared/ideas.css`); a short text section below
+each game (what it is, a link to its word list, how to play, the other holidays), since the game itself
+is drawn by JavaScript; the homepage's plain links and how-to text; and `sitemap.xml`. In the game pages and homepage it only rewrites the text between
 its `<!-- …:start -->` / `<!-- …:end -->` markers; the `ideas/` pages are fully generated, so don't edit them by hand.
 **Re-run it after changing words or adding a holiday** (step 4 below). Add `--images` to also redraw
 the 1200×630 `og.png` share images (needs Edge or Chrome). If the site moves to its own domain,
@@ -127,11 +128,28 @@ links redirect automatically.
 
 ### Search engine pings
 
-- **Google** reads `sitemap.xml` by itself every few days; `node tools/build_seo.js` refreshes its
-  `lastmod` dates. For an urgent page (e.g. before a holiday), use **URL Inspection → Request
+- **Google** reads `sitemap.xml` by itself every few days. Each URL's `lastmod` is the date its
+  page last changed (its last commit, or today when it has uncommitted changes). For an urgent page (e.g. before a holiday), use **URL Inspection → Request
   indexing** in Search Console; Google offers no API for that.
 - **Bing and other IndexNow engines** (Yandex, Seznam, Naver; DuckDuckGo, Yahoo and ChatGPT search
   use Bing's index) are pinged automatically by `.github/workflows/indexnow.yml` on every push to
   `main` that changes a page or the sitemap. It can also be run by hand from the repo's **Actions** tab.
   The 32-character `.txt` file at the root is the IndexNow key that proves we own the domain; don't
   delete or rename it.
+
+### Search Console report
+
+`tools/seo_audit.js` asks Google what it sees and writes `seo-report.md` (and `.json`; both
+git-ignored): clicks, impressions, CTR and position per page and query, each sitemap URL's index
+status, the sitemap's status, and queries worth working on (near page 1, or seen but buried). Add
+`--psi` for mobile PageSpeed scores and failing audits; `--days N` changes the window (default 90).
+
+```bash
+GSC_KEY=/path/to/service-account.json node tools/seo_audit.js --psi
+```
+
+It signs in as a Google Cloud service account (no npm packages needed). One-time setup: in a Google
+Cloud project enable the **Google Search Console API** and **PageSpeed Insights API**, create a
+service account with a JSON key (keep it out of this repo), and add the account's email in Search
+Console under **Settings → Users and permissions** with Restricted access. Search data lags 2–3 days,
+and changes take weeks to show up in rankings.

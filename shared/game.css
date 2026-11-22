@@ -216,3 +216,16 @@ h1 {
 .sheet-msg.good { color: var(--good); }
 .sheet-msg.bad { color: var(--bad); }
 .btn:disabled { opacity: .6; }
+
+/* Text below the game for search engines and curious players (written by tools/build_seo.js). */
+.page-about {
+  position: relative; z-index: 1; max-width: 520px; margin: 0 auto;
+  padding: 8px 16px calc(env(safe-area-inset-bottom) + 28px);
+  color: var(--muted); font-size: 15px; line-height: 1.55;
+}
+.page-about h2 { color: var(--ink); font-size: 22px; font-weight: 900; margin: 0 0 8px; }
+.page-about h3 { color: var(--ink); font-size: 17px; font-weight: 900; margin: 18px 0 6px; }
+.page-about p { margin: 0 0 8px; }
+.page-about ol { margin: 0; padding-left: 22px; }
+.page-about a { color: var(--ink); font-weight: 800; }
+.page-about .more { display: flex; flex-wrap: wrap; gap: 6px 14px; }
