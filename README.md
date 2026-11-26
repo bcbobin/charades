@@ -26,6 +26,10 @@ URL and theme on top of the same layout and game engine.
   holiday category with fewer than 12 words).
 - `<holiday>/index.html` — the holiday's colors and fonts (`:root` variables), its preset
   team names, and its own word lists split into `easy` and `hard`.
+- `favicon.ico`, `icon-192.png`, `apple-touch-icon.png` — the phone app's icon (charades-app
+  `assets/icon-only.png`, resized), used by the home, privacy and delete-data pages. Holiday pages
+  keep their own emoji favicons. The 🎭 art is from [Noto Emoji](https://github.com/googlefonts/noto-emoji),
+  © Google LLC, under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 Scores, team names and timer length are saved per holiday on each device (localStorage).
 Team names start as the holiday's presets; tap a team name (or ⚙️ Settings) to change them.
